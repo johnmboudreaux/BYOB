@@ -1,13 +1,37 @@
 
 exports.seed = function(knex, Promise) {
-  // Deletes ALL existing entries
-  return knex('table_name').del()
-    .then(function () {
-      // Inserts seed entries
-      return knex('table_name').insert([
-        {id: 1, colName: 'rowValue1'},
-        {id: 2, colName: 'rowValue2'},
-        {id: 3, colName: 'rowValue3'}
+  return knex('home_owner').del()
+    .then(() => knex('homes').delete())
+    .then(() => {
+      return Promise.all([
+        knex('homes').insert({
+
+        }, 'id')
+          .then(home => {
+            return knex('homes').insert([
+              {
+                houseName: 'home1',
+                houseAddress: '1234 whatnot',
+                description: 'two story',
+                bathrooms: '3',
+                bedrooms: '4',
+                zipCode: '80004',
+                ownerId: home[0]
+              },
+              {
+                houseName: 'home2',
+                houseAddress: '4567 my house is smaller',
+                description: 'ranch',
+                bathrooms: '2',
+                bedrooms: '3',
+                zipCode: '80005',
+                ownerId: home[0]
+              }
+            ]);
+          })
+          .then(home => console.log(`Seeding Complete for: ${ home }`))
+          .catch(error => console.log(`Error seeding data ${ error }`))
       ]);
-    });
+    })
+    .catch(error => console.log(`Error Seeding Data: ${ error }`));
 };
