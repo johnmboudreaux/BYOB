@@ -1,10 +1,10 @@
 
 exports.seed = function(knex, Promise) {
-  return knex('home_owner').del()
-    .then(() => knex('homes').delete())
+  return knex('homes').del()
+    .then(() => knex('home_owner').delete())
     .then(() => {
       return Promise.all([
-        knex('homes').insert({
+        knex('home_owner').insert({
 
         }, 'id')
           .then(home => {
