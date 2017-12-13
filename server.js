@@ -7,6 +7,9 @@ const path = require('path');
 const environment = process.env.NODE_ENV || 'development';
 const configuration = require('./knexfile')[environment];
 const database = require('knex')(configuration);
+const jwt = require('jsonwebtoken');
+
+require('dotenv').config();
 
 app.set('secretKey', process.env.SECRET_KEY);
 app.set('port', process.env.PORT || 3000);
@@ -85,9 +88,6 @@ app.get('', (request, response) => {
 
 });
 
-app.get('', (request, response) => {
-
-});
 
 app.post('', (request, response) => {
 
