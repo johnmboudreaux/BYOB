@@ -21,8 +21,10 @@
     "babel-plugin-add-module-exports": "^0.2.1",
     "babel-preset-env": "^1.6.1",
     "body-parser": "^1.18.2",
+    "dotenv": "^4.0.0",
     "express": "^4.16.2",
     "jquery": "^3.2.1",
+    "jsonwebtoken": "^8.1.0",
     "knex": "^0.14.2",
     "pg": "^7.4.0"
   },
