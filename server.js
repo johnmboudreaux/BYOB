@@ -85,8 +85,16 @@ app.get('/api/v1/owners', (request, response) => {
   })
 });
 
-app.get('', (request, response) => {
-
+app.get('/api/v1/homes', (request, response) => {
+  database('homes').select()
+  .then(homes => {
+    return response.status(200).json(homes)
+  })
+  .catch(error => {
+    return response.status(500).json({
+      error: `internal server error ${error}`
+    });
+  })
 });
 
 app.get('', (request, response) => {
