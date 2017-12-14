@@ -18,32 +18,30 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(__dirname + '/public'));
 
-
-
 const checkAuth = (request, response, next) => {
   let token;
 
-  if(request.headers.authorization) {
+  if (request.headers.authorization) {
     token = request.headers.authorization;
   }
 
-  if(request.body.token) {
+  if (request.body.token) {
     token = request.body.token;
   }
 
-  if(request.query.token) {
+  if (request.query.token) {
     token = request.query.token;
   }
 
-  if(!token) {
+  if (!token) {
     return response.status(403).json({ error: `Authorization is required ${error}` });
   }
 
   jwt.verify(token, app.get('secretKey'), (error, decoded) => {
-    if(error) {
+    if (error) {
       return response.status(403).json({ error: `Invalid token ${ error }` });
     }
-    if(decoded) {
+    if (decoded) {
       decoded.admin ? next()
         :
         response.status(403).json({ error: `Authorization is required ${error}` });
@@ -55,7 +53,7 @@ app.post('/api/v1/authenticate', (request, response) => {
   const { email, appName } = request.body;
   const emailSuffix = email.split('@')[1];
 
-  if(!email || !appName) {
+  if (!email || !appName) {
     return response.status(422).json({ error: `Missing email or application name ${error}` });
   }
 
@@ -69,47 +67,16 @@ app.post('/api/v1/authenticate', (request, response) => {
 
 });
 
-app.get('/', (request, response) => {
-  response.send('Welcome to BYOB!');
-});
-
 app.get('/api/v1/owners', (request, response) => {
   database('home_owner').select()
-  .then(owners => {
-    return response.status(200).json(owners)
-  })
-  .catch(error => {
-    return response.status(500).json({
-      error: `internal server error ${error}`
-    });
-  })
-});
-
-app.get('/api/v1/homes', (request, response) => {
-  const queryParam = Object.keys(request.query)[0];
-  const queryParamValue = request.query[queryParam];
-
-  if(!queryParam) {
-    database('homes').select()
-    .then(homes => {
-      return response.status(200).json(homes)
+    .then(owners => {
+      return response.status(200).json(owners);
     })
     .catch(error => {
       return response.status(500).json({
         error: `internal server error ${error}`
       });
-    })
-  } else {
-  database('homes').where(queryParam, queryParamValue).select()
-  .then(homes => homes.length ?
-    response.status(200).json(homes)
-    :
-    response.status(404).json({error: `No home with ${queryParam} found`})
-)
-  .catch(error => {
-    response.status(500).json({error: `Internal server error ${error}`});
-    })
-  }
+    });
 });
 
 app.get('/api/v1/owners/:id', (request, response) => {
@@ -117,35 +84,57 @@ app.get('/api/v1/owners/:id', (request, response) => {
 
   database('home_owner').where('id', id).select()
   .then(owner => {
-    if(owner.length){
-      return response.status(200).json(owner)
+    if (owner.length){
+      return response.status(200).json(owner);
     } else {
       return response.status(404).json({
         error: `Could not find owner with id: ${id}`
-      })
+      });
     }
   })
   .catch(error => {
-    return response.status(500).json({error})
-  })
+    return response.status(500).json({error});
+  });
+});
+
+app.get('/api/v1/homes', (request, response) => {
+  const queryParam = Object.keys(request.query)[0];
+  const queryParamValue = request.query[queryParam];
+
+  if (!queryParam) {
+    database('homes').select()
+      .then(homes => response.status(200).json(homes))
+      .catch(error => response.status(500).json({ error: `internal server error ${error}`}));
+  } else {
+    database('homes').where(queryParam, queryParamValue).select()
+
+      .then(homes => homes.length ?
+        response.status(200).json(homes)
+        :
+        response.status(404).json({error: `No home with ${queryParam} found`})
+      )
+      .catch(error => {
+        response.status(500).json({error: `Internal server error ${error}`});
+      });
+  }
 });
 
 app.get('/api/v1/owners/:id/homes', (request, response) => {
   const ownerId = request.params.id;
 
   database('homes').where('ownerId', ownerId).select()
-  .then(home => {
-    if(home.length){
-      return response.status(200).json(home)
-    } else {
-      return response.status(404).json({
-        error: `Could not find home with id: ${id}`
-      })
-    }
-  })
-  .catch(error => {
-    return response.status(500).json({error: `Internal server error`})
-  })
+    .then(home => {
+      if (home.length){
+        return response.status(200).json(home);
+      } else {
+        return response.status(404).json({
+          error: `Could not find home with id: ${ownerId}`
+        });
+      }
+    })
+    .catch(error => {
+      return response.status(500).json({error: `Internal server error ${error}`});
+    });
 });
 
 
@@ -153,19 +142,20 @@ app.post('/api/v1/owners', (request, response) => {
   const newOwner = request.body;
 
   for (let requiredParameter of ['firstName', 'lastName', 'streetAddress', 'zipCode']) {
-    if(!newOwner[requiredParameter]) {
+    if (!newOwner[requiredParameter]) {
       return response.status(422).json({
         error: `you are missing the ${requiredParameter} property`
-      })
+      });
     }
   }
+
   database('home_owner').insert(newOwner, '*')
-  .then(insertedOwner => {
-    return response.status(201).json(insertedOwner)
-  })
-  .catch(error => {
-    return response.status(500).json({ error })
-  })
+    .then(insertedOwner => {
+      return response.status(201).json(insertedOwner);
+    })
+    .catch(error => {
+      return response.status(500).json({ error });
+    });
 });
 
 app.post('/api/v1/owners/:id/homes', (request, response) => {
@@ -191,12 +181,12 @@ app.post('/api/v1/owners/:id/homes', (request, response) => {
 });
 
 app.put('/api/v1/owners/:id', (request, response) => {
-  let updatedOwner = request.body
-  const { id } = request.params
+  let updatedOwner = request.body;
+  const { id } = request.params;
 
 
-  for( let requiredParameter of ['firstName', 'lastName', 'streetAddress', 'zipCode']) {
-    if(!updatedOwner[requiredParameter]){
+  for ( let requiredParameter of ['firstName', 'lastName', 'streetAddress', 'zipCode']) {
+    if (!updatedOwner[requiredParameter]){
       return response.status(422).json({
         error: `You are missing the ${requiredParameter} property`
       });
@@ -205,23 +195,23 @@ app.put('/api/v1/owners/:id', (request, response) => {
   updatedOwner = Object.assign({}, updatedOwner, {id: id});
 
   database('home_owner').where('id', id).update(updatedOwner, '*')
-  .then(updatedOwner => {
-    if(!updatedOwner.length){
-      return response.status(422).json({error: `Owner ID does not exist ${error}`})
-    }
-    return response.status(200).json(updatedOwner)
-  })
-  .catch(error => {
-    return response.status(500).json({error: `Is this you who dis`})
-  })
-})
+    .then(updatedOwner => {
+      if (!updatedOwner.length){
+        return response.status(422).json({error: `Owner ID does not exist ${error}`});
+      }
+      return response.status(200).json(updatedOwner);
+    })
+    .catch(error => {
+      return response.status(500).json({error: `Internal server error ${error}`});
+    });
+});
 
 app.put('/api/v1/homes/:id', (request, response) => {
-  let updatedHome = request.body
-  const { id } = request.params
+  let updatedHome = request.body;
+  const { id } = request.params;
 
-  for( let requiredParameter of ['houseName', 'houseAddress', 'description', 'bathrooms', 'bedrooms', 'zipCode', 'ownerId']) {
-    if(!updatedHome[requiredParameter]){
+  for ( let requiredParameter of ['houseName', 'houseAddress', 'description', 'bathrooms', 'bedrooms', 'zipCode', 'ownerId']) {
+    if (!updatedHome[requiredParameter]){
       return response.status(422).json({
         error: `You are missing the ${requiredParameter} property`
       });
@@ -231,49 +221,49 @@ app.put('/api/v1/homes/:id', (request, response) => {
   updatedHome = Object.assign({}, updatedHome, {id: id});
 
   database('homes').where('id', id).update(updatedHome, '*')
-  .then(updatedHome => {
-    if(!updatedHome.length){
-      return response.status(422).json({error: `Owner ID does not exist ${error}`})
-    }
-    return response.status(200).json(updatedHome)
-  })
-  .catch(error => {
-    return response.status(500).json({error: `Is this you who dis`})
-  })
+    .then(updatedHome => {
+      if (!updatedHome.length){
+        return response.status(422).json({error: `Owner ID does not exist ${error}`});
+      }
+      return response.status(200).json(updatedHome);
+    })
+    .catch(error => {
+      return response.status(500).json({error: `Internal server error ${error}`});
+    });
 });
 
 app.delete('/api/v1/owners/:id', (request, response) => {
   const { id } = request.params;
 
   database('homes').where('ownerId', id).del()
-  .then(home => {
-    return response.status(204)
- })
-  .catch(error => {
-      response.status(500).json({ error })
+    .then(response => {
+      return response.status(204);
     })
+    .catch(error => {
+      response.status(500).json({ error });
+    });
 
- database('home_owner').where('id', id).del()
-  .then(length => {
-    length ? response.sendStatus(204) : response.status(422)
-  .send({ error: `Nothing to delete with id ${id}`})
- })
-  .catch(error => {
-      response.status(500).json({ error })
+  database('home_owner').where('id', id).del()
+    .then(length => {
+      length ? response.sendStatus(204) : response.status(422)
+        .send({ error: `Nothing to delete with id ${id}`});
     })
+    .catch(error => {
+      response.status(500).json({ error });
+    });
 });
 
 app.delete('/api/v1/homes/:id', (request, response) => {
   const { id } = request.params;
 
   database('homes').where('ownerId', id).del()
-  .then(length => {
-    length ? response.sendStatus(204) : response.status(422)
-    .send({ error: `Nothing to delete with id ${id}`})
-  })
-  .catch(error => {
-    response.status(500).json({ error })
-  })
+    .then(length => {
+      length ? response.sendStatus(204) : response.status(422)
+        .send({ error: `Nothing to delete with id ${id}`});
+    })
+    .catch(error => {
+      response.status(500).json({ error });
+    });
 
 });
 
