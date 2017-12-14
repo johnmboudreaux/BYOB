@@ -142,8 +142,22 @@ app.post('', (request, response) => {
 
 });
 
-app.delete('', (request, response) => {
+app.delete('/api/v1/owners/:id', (request, response) => {
+  const { id } = request.params;
 
+  database('homes').where('ownerId', id).del()
+  .then(home => {
+    return response.status(201).json()
+ })
+
+ database('home_owner').where('id', id).del()
+  .then(length => {
+    length ? response.sendStatus(201) : response.status(422)
+  .send({ error: `nothing to delete with id ${id}`})
+ })
+  .catch(error => {
+      response.status(500).json({ error })
+    })
 });
 
 app.delete('', (request, response) => {
