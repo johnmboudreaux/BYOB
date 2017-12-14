@@ -165,12 +165,15 @@ app.delete('/api/v1/owners/:id', (request, response) => {
 
   database('homes').where('ownerId', id).del()
   .then(home => {
-    return response.status(201).json()
+    return response.status(204)
  })
+  .catch(error => {
+      response.status(500).json({ error })
+    })
 
  database('home_owner').where('id', id).del()
   .then(length => {
-    length ? response.sendStatus(201) : response.status(422)
+    length ? response.sendStatus(204) : response.status(422)
   .send({ error: `Nothing to delete with id ${id}`})
  })
   .catch(error => {
@@ -183,7 +186,7 @@ app.delete('/api/v1/homes/:id', (request, response) => {
 
   database('homes').where('ownerId', id).del()
   .then(length => {
-    length ? response.sendStatus(201) : response.status(422)
+    length ? response.sendStatus(204) : response.status(422)
     .send({ error: `Nothing to delete with id ${id}`})
   })
   .catch(error => {
