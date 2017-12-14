@@ -176,7 +176,6 @@ app.put('/api/v1/owners/:id', (request, response) => {
 
   database('home_owner').where('id', id).update(updatedOwner, '*')
   .then(updatedOwner => {
-    console.log('owner object:', updatedOwner);
     if(!updatedOwner.length){
       return response.status(422).json({error: `Owner ID does not exist ${error}`})
     }
@@ -186,6 +185,32 @@ app.put('/api/v1/owners/:id', (request, response) => {
     return response.status(500).json({error: `Is this you who dis`})
   })
 })
+
+app.put('/api/v1/homes/:id', (request, response) => {
+  let updatedHome = request.body
+  const { id } = request.params
+
+  for( let requiredParameter of ['houseName', 'houseAddress', 'description', 'bathrooms', 'bedrooms', 'zipCode', 'ownerId']) {
+    if(!updatedHome[requiredParameter]){
+      return response.status(422).json({
+        error: `You are missing the ${requiredParameter} property`
+      });
+    }
+  }
+
+  updatedHome = Object.assign({}, updatedHome, {id: id});
+
+  database('homes').where('id', id).update(updatedHome, '*')
+  .then(updatedHome => {
+    if(!updatedHome.length){
+      return response.status(422).json({error: `Owner ID does not exist ${error}`})
+    }
+    return response.status(200).json(updatedHome)
+  })
+  .catch(error => {
+    return response.status(500).json({error: `Is this you who dis`})
+  })
+});
 
 app.delete('/api/v1/owners/:id', (request, response) => {
   const { id } = request.params;
