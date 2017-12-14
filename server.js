@@ -86,19 +86,37 @@ app.get('/api/v1/owners', (request, response) => {
 });
 
 app.get('/api/v1/homes', (request, response) => {
-  database('homes').select()
+  const queryParam = Object.keys(request.query)[0];
+  const queryParamValue = request.query[queryParam];
+
+  if(!queryParam) {
+    database('homes').select()
+    .then(homes => {
+      return response.status(200).json(homes)
+    })
+    .catch(error => {
+      return response.status(500).json({
+        error: `internal server error ${error}`
+      });
+    })
+  } else {
+  database('homes').where(queryParam, queryParamValue).select()
   .then(homes => {
-    return response.status(200).json(homes)
+    if(!homes.length){
+      return response.status(404).json({error: `No home with ${queryParameter} found`})
+      console.log('in-if', homes);
+    }
+    return response.status(200).json(homes);
   })
   .catch(error => {
-    return response.status(500).json({
-      error: `internal server error ${error}`
-    });
-  })
+    response.status(500).json({error: 'Internal server error'});
+    })
+  }
 });
 
 app.get('/api/v1/owners/:id', (request, response) => {
   const id = request.params.id;
+
   database('home_owner').where('id', id).select()
   .then(owner => {
     if(owner.length){
