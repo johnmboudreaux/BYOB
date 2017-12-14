@@ -36,17 +36,17 @@ const checkAuth = (request, response, next) => {
   }
 
   if(!token) {
-    return response.status(403).json({ error: 'You must be authorized to hit this endpoint' });
+    return response.status(403).json({ error: `Authorization is required ${error}` });
   }
 
   jwt.verify(token, app.get('secretKey'), (error, decoded) => {
     if(error) {
-      return response.status(403).json({ error: 'Invalid token' });
+      return response.status(403).json({ error: `Invalid token ${ error }` });
     }
     if(decoded) {
       decoded.admin ? next()
         :
-        response.status(403).json({ error: 'You are not authorized to have write access to this endpoint' });
+        response.status(403).json({ error: `Authorization is required ${error}` });
     }
   });
 };
@@ -56,7 +56,7 @@ app.post('/api/v1/authenticate', (request, response) => {
   const emailSuffix = email.split('@')[1];
 
   if(!email || !appName) {
-    return response.status(422).json({ error: 'You are missing an email or application name' });
+    return response.status(422).json({ error: `Missing email or application name ${error}` });
   }
 
   let adminCheck = emailSuffix === 'turing.io' ?
@@ -138,8 +138,26 @@ app.post('/api/v1/owners', (request, response) => {
   })
 });
 
-app.post('', (request, response) => {
+app.post('/api/v1/owners/:id/homes', (request, response) => {
+  let home = request.body;
+  const { id } = request.params;
 
+  for ( let requiredParameter of ['houseName', 'houseAddress', 'description', 'bathrooms', 'bedrooms', 'zipCode', 'ownerId']) {
+    if (!home[requiredParameter]) {
+      return response.status(422).json({
+        error: `You are missing the ${requiredParameter} property`
+      });
+    }
+  }
+  home = Object.assign({}, home, { ownerId: id });
+
+  database('homes').insert(home, '*')
+    .then(insertedHome => {
+      return response.status(201).json(insertedHome);
+    })
+    .catch(error => {
+      return response.status(500).json({ error: `Internal Server Error ${error}`});
+    });
 });
 
 app.delete('/api/v1/owners/:id', (request, response) => {
