@@ -201,5 +201,22 @@ describe('API Routes', () => {
     });
   });
 
+  describe('/api/v1/owners/:id/homes', () => {
+  it('should return a homes for specific owner', (done) => {
+    chai.request(server)
+      .get('/api/v1/owners/170/homes')
+      .then((response) => {
+          response.should.have.status(404);
+          response.should.be.json;
+          response.body.should.be.a('object');
+          response.body.error.should.equal('Could not find home with id: 170');
+        done();
+      })
+      .catch((error) => {
+        throw error;
+      });
+    });
+  });
+
 
 });
