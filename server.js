@@ -64,7 +64,6 @@ app.post('/api/v1/authenticate', (request, response) => {
 
   const token = jwt.sign(adminCheck, app.get('secretKey'));
   return response.status(200).json({ token });
-
 });
 
 app.get('/api/v1/owners', (request, response) => {
@@ -138,8 +137,11 @@ app.get('/api/v1/owners/:id/homes', (request, response) => {
 });
 
 
-app.post('/api/v1/owners', (request, response) => {
+app.post('/api/v1/owners', checkAuth, (request, response) => {
   const newOwner = request.body;
+  delete newOwner.token;
+
+  console.log(newOwner);
 
   for (let requiredParameter of ['firstName', 'lastName', 'streetAddress', 'zipCode']) {
     if (!newOwner[requiredParameter]) {
@@ -180,7 +182,7 @@ app.post('/api/v1/owners/:id/homes', (request, response) => {
     });
 });
 
-app.put('/api/v1/owners/:id', (request, response) => {
+app.put('/api/v1/owners/:id', checkAuth, (request, response) => {
   let updatedOwner = request.body;
   const { id } = request.params;
 
@@ -206,7 +208,7 @@ app.put('/api/v1/owners/:id', (request, response) => {
     });
 });
 
-app.put('/api/v1/homes/:id', (request, response) => {
+app.put('/api/v1/homes/:id', checkAuth, (request, response) => {
   let updatedHome = request.body;
   const { id } = request.params;
 
@@ -232,7 +234,7 @@ app.put('/api/v1/homes/:id', (request, response) => {
     });
 });
 
-app.delete('/api/v1/owners/:id', (request, response) => {
+app.delete('/api/v1/owners/:id', checkAuth, (request, response) => {
   const { id } = request.params;
 
   database('homes').where('ownerId', id).del()
@@ -253,7 +255,7 @@ app.delete('/api/v1/owners/:id', (request, response) => {
     });
 });
 
-app.delete('/api/v1/homes/:id', (request, response) => {
+app.delete('/api/v1/homes/:id', checkAuth, (request, response) => {
   const { id } = request.params;
 
   database('homes').where('ownerId', id).del()
