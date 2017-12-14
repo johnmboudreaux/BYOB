@@ -114,8 +114,22 @@ app.get('/api/v1/owners/:id', (request, response) => {
   })
 });
 
-app.get('', (request, response) => {
+app.get('/api/v1/owners/:id/homes', (request, response) => {
+  const ownerId = request.params.id;
 
+  database('homes').where('ownerId', ownerId).select()
+  .then(home => {
+    if(home.length){
+      return response.status(200).json(home)
+    } else {
+      return response.status(404).json({
+        error: `Could not find home with id: ${id}`
+      })
+    }
+  })
+  .catch(error => {
+    return response.status(500).json({error: `Internal server error`})
+  })
 });
 
 
