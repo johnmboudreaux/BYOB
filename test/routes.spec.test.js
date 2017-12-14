@@ -248,5 +248,28 @@ describe('API Routes', () => {
     });
   });
 
+  describe('POST /api/v1/owners', () => {
+    it("should add new owner to owners", (done) => {
+      chai.request(server)
+        .post('/api/v1/owners')
+        .send({
+          id: 10,
+          lastName: 'porter',
+          streetAddress: '1234 borifill pl',
+          zipCode: 80058
+        })
+        .then(response => {
+          response.should.have.status(422);
+          response.should.be.json;
+          response.body.should.be.a('object');
+          response.body.error.should.equal('you are missing the firstName property');
+          done();
+        })
+        .catch(error => {
+          throw error;
+        });
+    });
+  });
+
 
 });
