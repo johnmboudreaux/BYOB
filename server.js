@@ -19,9 +19,6 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(__dirname + '/public'));
 
 
-app.get('/', (request, response) => {
-  response.send('Welcome to BYOB!');
-});
 
 const checkAuth = (request, response, next) => {
   let token;
@@ -72,8 +69,20 @@ app.post('/api/v1/authenticate', (request, response) => {
 
 });
 
-app.get('', (request, response) => {
+app.get('/', (request, response) => {
+  response.send('Welcome to BYOB!');
+});
 
+app.get('/api/v1/owners', (request, response) => {
+  database('home_owner').select()
+  .then(owners => {
+    return response.status(200).json(owners)
+  })
+  .catch(error => {
+    return response.status(500).json({
+      error: `internal server error ${error}`
+    });
+  })
 });
 
 app.get('', (request, response) => {
