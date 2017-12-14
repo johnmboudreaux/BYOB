@@ -218,5 +218,35 @@ describe('API Routes', () => {
     });
   });
 
+  describe('POST /api/v1/owners', () => {
+    it("should add new owner to owners", (done) => {
+      chai.request(server)
+        .post('/api/v1/owners')
+        .send({
+          id: 10,
+          firstName: 'ben the borifill',
+          lastName: 'porter',
+          streetAddress: '1234 borifill pl',
+          zipCode: 80058
+        })
+        .then(response => {
+          response.should.have.status(201);
+          response.should.be.json;
+          response.body.should.be.a('array');
+          response.body.length.should.equal(1);
+          response.body[0].should.have.property('id');
+          response.body[0].id.should.equal(10);
+          response.body[0].should.have.property('firstName');
+          response.body[0].should.have.property('lastName');
+          response.body[0].should.have.property('streetAddress');
+          response.body[0].should.have.property('zipCode');
+          done();
+        })
+        .catch(error => {
+          throw error;
+        });
+    });
+  });
+
 
 });
