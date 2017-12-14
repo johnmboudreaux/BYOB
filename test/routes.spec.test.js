@@ -226,7 +226,8 @@ describe('API Routes', () => {
           firstName: 'ben the borifill',
           lastName: 'porter',
           streetAddress: '1234 borifill pl',
-          zipCode: 80058
+          zipCode: 80058,
+          token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InVzZXJAdHVyaW5nLmlvIiwiYXBwTmFtZSI6InVzZXIiLCJhZG1pbiI6dHJ1ZSwiaWF0IjoxNTEzMjkyNzA4fQ.sT916KQPiD_sbT1Bkguu6VMvkwsWHUkAGHD_b7ul9wo'
         })
         .then(response => {
           response.should.have.status(201);
@@ -255,7 +256,8 @@ describe('API Routes', () => {
           id: 10,
           lastName: 'porter',
           streetAddress: '1234 borifill pl',
-          zipCode: 80058
+          zipCode: 80058,
+          token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InVzZXJAdHVyaW5nLmlvIiwiYXBwTmFtZSI6InVzZXIiLCJhZG1pbiI6dHJ1ZSwiaWF0IjoxNTEzMjkyNzA4fQ.sT916KQPiD_sbT1Bkguu6VMvkwsWHUkAGHD_b7ul9wo'
         })
         .then(response => {
           response.should.have.status(422);
@@ -317,7 +319,8 @@ describe('API Routes', () => {
           bathrooms: 4,
           houseAddress: '1234 down the road lane',
           zipCode: 80004,
-          ownerId: 1
+          ownerId: 1,
+          token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InVzZXJAdHVyaW5nLmlvIiwiYXBwTmFtZSI6InVzZXIiLCJhZG1pbiI6dHJ1ZSwiaWF0IjoxNTEzMjkyNzA4fQ.sT916KQPiD_sbT1Bkguu6VMvkwsWHUkAGHD_b7ul9wo'
         })
         .then(response => {
           response.should.have.status(422);
