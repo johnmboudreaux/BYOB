@@ -91,26 +91,18 @@ app.get('/api/v1/homes', (request, response) => {
 
   if(!queryParam) {
     database('homes').select()
-    .then(homes => {
-      return response.status(200).json(homes)
-    })
-    .catch(error => {
-      return response.status(500).json({
-        error: `internal server error ${error}`
-      });
-    })
+    .then(homes => response.status(200).json(homes))
+    .catch(error => response.status(500).json({ error: `internal server error ${error}`}))
   } else {
   database('homes').where(queryParam, queryParamValue).select()
   .then(homes => {
     if(!homes.length){
-      return response.status(404).json({error: `No home with ${queryParameter} found`})
       console.log('in-if', homes);
+      return response.status(404).json({error: `No home with ${queryParameter} found`})
     }
     return response.status(200).json(homes);
   })
-  .catch(error => {
-    response.status(500).json({error: 'Internal server error'});
-    })
+  .catch(error => response.status(500).json({error: 'Internal server error'}))
   }
 });
 
