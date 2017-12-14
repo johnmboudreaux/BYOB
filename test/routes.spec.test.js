@@ -120,7 +120,6 @@ describe('API Routes', () => {
       chai.request(server)
         .get('/api/v1/homes')
         .then(response => {
-          console.log(response);
           response.should.have.status(200);
           response.should.be.json;
           response.body.should.be.a('array');
@@ -263,6 +262,68 @@ describe('API Routes', () => {
           response.should.be.json;
           response.body.should.be.a('object');
           response.body.error.should.equal('you are missing the firstName property');
+          done();
+        })
+        .catch(error => {
+          throw error;
+        });
+    });
+  });
+
+  describe('POST /api/v1/owners/:id/homes', () => {
+    it("should add new home to homes table", (done) => {
+      chai.request(server)
+        .post('/api/v1/owners/1/homes')
+        .send({
+          id: 10,
+          houseName: 'luxury',
+          description: 'holy magoly',
+          bedrooms: 4,
+          bathrooms: 4,
+          houseAddress: '1234 down the road lane',
+          zipCode: 80004,
+          ownerId: 1
+        })
+        .then(response => {
+          response.should.have.status(201);
+          response.should.be.json;
+          response.body.should.be.a('array');
+          response.body.length.should.equal(1);
+          response.body[0].should.have.property('id');
+          response.body[0].id.should.equal(10);
+          response.body[0].should.have.property('houseName');
+          response.body[0].should.have.property('description');
+          response.body[0].should.have.property('houseAddress');
+          response.body[0].should.have.property('bathrooms');
+          response.body[0].should.have.property('bedrooms');
+          response.body[0].should.have.property('zipCode');
+          response.body[0].should.have.property('ownerId');
+          done();
+        })
+        .catch(error => {
+          throw error;
+        });
+    });
+  });
+
+  describe('POST /api/v1/owners/:id/homes', () => {
+    it("should add new owner to owners", (done) => {
+      chai.request(server)
+        .post('/api/v1/owners/1/homes')
+        .send({
+          id: 10,
+          houseName: 'luxury',
+          bedrooms: 4,
+          bathrooms: 4,
+          houseAddress: '1234 down the road lane',
+          zipCode: 80004,
+          ownerId: 1
+        })
+        .then(response => {
+          response.should.have.status(422);
+          response.should.be.json;
+          response.body.should.be.a('object');
+          response.body.error.should.equal('You are missing the description property');
           done();
         })
         .catch(error => {
