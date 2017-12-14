@@ -119,8 +119,23 @@ app.get('', (request, response) => {
 });
 
 
-app.post('', (request, response) => {
+app.post('/api/v1/owners', (request, response) => {
+  const newOwner = request.body;
 
+  for (let requiredParameter of ['firstName', 'lastName', 'streetAddress', 'zipCode']) {
+    if(!newOwner[requiredParameter]) {
+      return response.status(422).json({
+        error: `you are missing the ${requiredParameter} property`
+      })
+    }
+  }
+  database('home_owner').insert(newOwner, '*')
+  .then(insertedOwner => {
+    return response.status(201).json(insertedOwner)
+  })
+  .catch(error => {
+    return response.status(500).json({ error })
+  })
 });
 
 app.post('', (request, response) => {
