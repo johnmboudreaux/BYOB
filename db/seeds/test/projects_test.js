@@ -50,7 +50,7 @@ exports.seed = function(knex, Promise) {
                 houseAddress: '2104 Westfall Avenue',
                 bathrooms: '5',
                 bedrooms: '5',
-                zipCode: '87501',
+                zipCode: '80221',
                 ownerId: 1
               },
               {
@@ -70,7 +70,7 @@ exports.seed = function(knex, Promise) {
                 houseAddress: '788 South Oklahoma Court',
                 bathrooms: '2',
                 bedrooms: '4',
-                zipCode: '87501',
+                zipCode: '80128',
                 ownerId: 3
               },
               {
@@ -80,7 +80,7 @@ exports.seed = function(knex, Promise) {
                 houseAddress: '431 East Gainsway St.',
                 bathrooms: '1',
                 bedrooms: '1',
-                zipCode: '87501',
+                zipCode: '80004',
                 ownerId: 4
               },
               {

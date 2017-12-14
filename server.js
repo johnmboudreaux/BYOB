@@ -67,10 +67,6 @@ app.post('/api/v1/authenticate', (request, response) => {
 
 });
 
-app.get('/', (request, response) => {
-  response.send('Welcome to BYOB!');
-});
-
 app.get('/api/v1/owners', (request, response) => {
   database('home_owner').select()
     .then(owners => {
@@ -81,6 +77,24 @@ app.get('/api/v1/owners', (request, response) => {
         error: `internal server error ${error}`
       });
     });
+});
+
+app.get('/api/v1/owners/:id', (request, response) => {
+  const id = request.params.id;
+
+  database('home_owner').where('id', id).select()
+  .then(owner => {
+    if (owner.length){
+      return response.status(200).json(owner);
+    } else {
+      return response.status(404).json({
+        error: `Could not find owner with id: ${id}`
+      });
+    }
+  })
+  .catch(error => {
+    return response.status(500).json({error});
+  });
 });
 
 app.get('/api/v1/homes', (request, response) => {
@@ -103,24 +117,6 @@ app.get('/api/v1/homes', (request, response) => {
         response.status(500).json({error: `Internal server error ${error}`});
       });
   }
-});
-
-app.get('/api/v1/owners/:id', (request, response) => {
-  const id = request.params.id;
-
-  database('home_owner').where('id', id).select()
-    .then(owner => {
-      if (owner.length){
-        return response.status(200).json(owner);
-      } else {
-        return response.status(404).json({
-          error: `Could not find owner with id: ${id}`
-        });
-      }
-    })
-    .catch(error => {
-      return response.status(500).json({error});
-    });
 });
 
 app.get('/api/v1/owners/:id/homes', (request, response) => {
