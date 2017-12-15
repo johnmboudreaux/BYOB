@@ -51,6 +51,27 @@ describe('API Routes', () => {
       });
   });
 
+  describe('post /api/v1/authenticate', () => {
+    it("Create a token for users", (done) => {
+      chai.request(server)
+        .post('/api/v1/authenticate')
+        .send({
+	         "email": "someEmail@turing.io",
+	         "appName": "appName"
+        })
+        .then(response => {
+          response.should.have.status(201);
+          response.should.be.json;
+          response.body.should.be.a('object');
+          response.body.should.have.property('token');
+          done();
+        })
+        .catch(error => {
+          throw error;
+        });
+    });
+  });
+
   describe('GET /api/v1/owners', () => {
     it("should return all owners", (done) => {
       chai.request(server)
@@ -335,5 +356,34 @@ describe('API Routes', () => {
     });
   });
 
+  describe('/api/v1/owners/:id', () => {
+  it('should return an updated home owner', (done) => {
+    chai.request(server)
+      .put('/api/v1/owners/2')
+      .send({
+        id: 2,
+        firstName: 'ben the borifill',
+        lastName: 'porter',
+        streetAddress: '1234 borifill pl',
+        zipCode: 80058,
+        token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InVzZXJAdHVyaW5nLmlvIiwiYXBwTmFtZSI6InVzZXIiLCJhZG1pbiI6dHJ1ZSwiaWF0IjoxNTEzMjkyNzA4fQ.sT916KQPiD_sbT1Bkguu6VMvkwsWHUkAGHD_b7ul9wo'
+      })
+      .then((response) => {
+        response.should.have.status(200);
+        response.should.be.json;
+        response.body.should.be.a('array');
+        response.body.length.should.equal(1);
+        response.body[0].id.should.equal(2);
+        response.body[0].firstName.should.equal('ben the borifill');
+        response.body[0].lastName.should.equal('porter');
+        response.body[0].streetAddress.should.equal('1234 borifill pl');
+        response.body[0].zipCode.should.equal(80058);
+        done();
+      })
+      .catch((error) => {
+        throw error;
+      });
+    });
+  });
 
 });

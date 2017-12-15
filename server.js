@@ -63,7 +63,7 @@ app.post('/api/v1/authenticate', (request, response) => {
     Object.assign({}, { email, appName, admin: false });
 
   const token = jwt.sign(adminCheck, app.get('secretKey'));
-  return response.status(200).json({ token });
+  return response.status(201).json({ token });
 });
 
 app.get('/api/v1/owners', (request, response) => {
@@ -141,8 +141,6 @@ app.post('/api/v1/owners', checkAuth, (request, response) => {
   const newOwner = request.body;
   delete newOwner.token;
 
-  console.log(newOwner);
-
   for (let requiredParameter of ['firstName', 'lastName', 'streetAddress', 'zipCode']) {
     if (!newOwner[requiredParameter]) {
       return response.status(422).json({
@@ -163,6 +161,7 @@ app.post('/api/v1/owners', checkAuth, (request, response) => {
 app.post('/api/v1/owners/:id/homes', (request, response) => {
   let home = request.body;
   const { id } = request.params;
+  delete home.token;
 
   for ( let requiredParameter of ['houseName', 'houseAddress', 'description', 'bathrooms', 'bedrooms', 'zipCode', 'ownerId']) {
     if (!home[requiredParameter]) {
@@ -185,6 +184,7 @@ app.post('/api/v1/owners/:id/homes', (request, response) => {
 app.put('/api/v1/owners/:id', checkAuth, (request, response) => {
   let updatedOwner = request.body;
   const { id } = request.params;
+  delete updatedOwner.token;
 
 
   for ( let requiredParameter of ['firstName', 'lastName', 'streetAddress', 'zipCode']) {
