@@ -81,7 +81,6 @@ const getToken = (email, appName) => {
     },
     body: JSON.stringify(postBody)
   }).then(response => response.json()).then(response => {
-    console.log(response);
     appendToken(response);
   }).catch(error => console.log(error));
 };
@@ -92,12 +91,8 @@ const appendToken = ({ token }) => {
 
 const inputValues = event => {
   event.preventDefault();
-
   let email = $('.email-input').val();
   let appName = $('.app-name').val();
-
-  console.log(email);
-  console.log(appName);
 
   getToken(email, appName);
 };

@@ -161,6 +161,7 @@ app.post('/api/v1/owners', checkAuth, (request, response) => {
 app.post('/api/v1/owners/:id/homes', checkAuth, (request, response) => {
   let home = request.body;
   const { id } = request.params;
+  delete home.token;
 
   for ( let requiredParameter of ['houseName', 'houseAddress', 'description', 'bathrooms', 'bedrooms', 'zipCode', 'ownerId']) {
     if (!home[requiredParameter]) {
