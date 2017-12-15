@@ -51,6 +51,27 @@ describe('API Routes', () => {
       });
   });
 
+  describe('post /api/v1/authenticate', () => {
+    it("Create a token for users", (done) => {
+      chai.request(server)
+        .post('/api/v1/authenticate')
+        .send({
+	         "email": "someEmail@turing.io",
+	         "appName": "appName"
+        })
+        .then(response => {
+          response.should.have.status(201);
+          response.should.be.json;
+          response.body.should.be.a('object');
+          response.body.should.have.property('token');
+          done();
+        })
+        .catch(error => {
+          throw error;
+        });
+    });
+  });
+
   describe('GET /api/v1/owners', () => {
     it("should return all owners", (done) => {
       chai.request(server)

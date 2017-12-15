@@ -63,7 +63,7 @@ app.post('/api/v1/authenticate', (request, response) => {
     Object.assign({}, { email, appName, admin: false });
 
   const token = jwt.sign(adminCheck, app.get('secretKey'));
-  return response.status(200).json({ token });
+  return response.status(201).json({ token });
 });
 
 app.get('/api/v1/owners', (request, response) => {
