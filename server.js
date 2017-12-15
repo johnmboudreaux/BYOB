@@ -43,8 +43,8 @@ const checkAuth = (request, response, next) => {
     }
     if (decoded) {
       decoded.admin ? next()
-        :
-        response.status(403).json({ error: `Authorization is required ${error}` });
+      :
+      response.status(403).json({ error: `Authorization is required ${error}` });
     }
   });
 };
@@ -161,7 +161,6 @@ app.post('/api/v1/owners', checkAuth, (request, response) => {
 app.post('/api/v1/owners/:id/homes', checkAuth, (request, response) => {
   let home = request.body;
   const { id } = request.params;
-  delete home.token;
 
   for ( let requiredParameter of ['houseName', 'houseAddress', 'description', 'bathrooms', 'bedrooms', 'zipCode', 'ownerId']) {
     if (!home[requiredParameter]) {
