@@ -20,7 +20,7 @@ const getToken = (email, appName) => {
 };
 
 const appendToken = ({token}) => {
-  $('.token-text').text(token);
+  $('.token-text').text(`Token: ${token}`);
 };
 
 const inputValues = (event) => {
