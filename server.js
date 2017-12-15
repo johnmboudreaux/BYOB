@@ -43,8 +43,8 @@ const checkAuth = (request, response, next) => {
     }
     if (decoded) {
       decoded.admin ? next()
-        :
-        response.status(403).json({ error: `Authorization is required ${error}` });
+      :
+      response.status(403).json({ error: `Authorization is required ${error}` });
     }
   });
 };

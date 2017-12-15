@@ -10,3 +10,9 @@ test:
   override:
     - npm run test
     - npm run lint
+
+deployment:
+  production:
+    branch: master
+    heroku:
+      appname: jm-palette-picker
