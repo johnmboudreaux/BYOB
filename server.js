@@ -158,7 +158,7 @@ app.post('/api/v1/owners', checkAuth, (request, response) => {
     });
 });
 
-app.post('/api/v1/owners/:id/homes', (request, response) => {
+app.post('/api/v1/owners/:id/homes', checkAuth, (request, response) => {
   let home = request.body;
   const { id } = request.params;
   delete home.token;

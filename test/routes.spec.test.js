@@ -270,7 +270,7 @@ describe('API Routes', () => {
   });
 
   describe('POST /api/v1/owners', () => {
-    it("should add new owner to owners", (done) => {
+    it("should serve an error if a property is missing", (done) => {
       chai.request(server)
         .post('/api/v1/owners')
         .send({
@@ -293,6 +293,54 @@ describe('API Routes', () => {
     });
   });
 
+  describe('POST /api/v1/owners', () => {
+    it("should seve an error if token is invalid", (done) => {
+      chai.request(server)
+        .post('/api/v1/owners')
+        .send({
+          id: 10,
+          lastName: 'porter',
+          streetAddress: '1234 borifill pl',
+          zipCode: 80058,
+          token: 'eiJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InVzZXJAdHVyaW5nLmlvIiwiYXBwTmFtZSI6InVzZXIiLCJhZG1pbiI6dHJ1ZSwiaWF0IjoxNTEzMjkyNzA4fQ.sT916KQPiD_sbT1Bkguu6VMvkwsWHUkAGHD_b7ul9wo'
+        })
+        .then(response => {
+          response.should.have.status(403);
+          response.should.be.json;
+          response.body.should.be.a('object');
+          response.body.error.should.equal('Invalid token JsonWebTokenError: invalid token');
+          done();
+        })
+        .catch(error => {
+          throw error;
+        });
+    });
+  });
+
+  describe('POST /api/v1/owners', () => {
+    it("should serve an error if token does not have admin permission", (done) => {
+      chai.request(server)
+        .post('/api/v1/owners')
+        .send({
+          id: 10,
+          lastName: 'porter',
+          streetAddress: '1234 borifill pl',
+          zipCode: 80058,
+          token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InNvbWVFbWFpbEBlbWFpbC5jb20iLCJhcHBOYW1lIjoiYXBwTmFtZSIsImFkbWluIjpmYWxzZSwiaWF0IjoxNTEzMzAxOTg1fQ.7W_UQVD251kMfB-CvnUiQWWIIzY6hpLZxBn802-vt6'
+        })
+        .then(response => {
+          response.should.have.status(403);
+          response.should.be.json;
+          response.body.should.be.a('object');
+          response.body.error.should.equal('Invalid token JsonWebTokenError: invalid signature');
+          done();
+        })
+        .catch(error => {
+          throw error;
+        });
+    });
+  });
+
   describe('POST /api/v1/owners/:id/homes', () => {
     it("should add new home to homes table", (done) => {
       chai.request(server)
@@ -305,7 +353,8 @@ describe('API Routes', () => {
           bathrooms: 4,
           houseAddress: '1234 down the road lane',
           zipCode: 80004,
-          ownerId: 1
+          ownerId: 1,
+          token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InVzZXJAdHVyaW5nLmlvIiwiYXBwTmFtZSI6InVzZXIiLCJhZG1pbiI6dHJ1ZSwiaWF0IjoxNTEzMjkyNzA4fQ.sT916KQPiD_sbT1Bkguu6VMvkwsWHUkAGHD_b7ul9wo'
         })
         .then(response => {
           response.should.have.status(201);
@@ -330,7 +379,7 @@ describe('API Routes', () => {
   });
 
   describe('POST /api/v1/owners/:id/homes', () => {
-    it("should add new owner to owners", (done) => {
+    it("should serve an error if a property is missing", (done) => {
       chai.request(server)
         .post('/api/v1/owners/1/homes')
         .send({

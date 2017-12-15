@@ -125,7 +125,9 @@ exports.seed = function(knex, Promise) {
               }
             ]);
           })
-          .then(home => console.log(`Seeding Complete for: ${ home }`))
+          .then(home => {
+            home
+          })
           .catch(error => console.log(`Error seeding data ${ error }`))
       ]);
     })
