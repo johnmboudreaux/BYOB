@@ -15,4 +15,4 @@ deployment:
   production:
     branch: master
     heroku:
-      appname: jm-palette-picker
+      appname: jm-byob
