@@ -92,7 +92,7 @@ When a request is made a response will be returned with one of the following sta
 
 ### Authenticate
 
-- **[<code>POST</code> /api/v1/authenticate](documentation/POST_authenticate.md)**
+- **[<code>POST</code> /api/v1/authenticate](docs/POST_authenticate.md)**
 
 ### Homes
 
