@@ -68,9 +68,7 @@ app.post('/api/v1/authenticate', (request, response) => {
 
 app.get('/api/v1/owners', (request, response) => {
   database('home_owner').select()
-    .then(owners => {
-      return response.status(200).json(owners);
-    })
+    .then(owners => response.status(200).json(owners))
     .catch(error => {
       return response.status(500).json({
         error: `internal server error ${error}`
@@ -91,9 +89,7 @@ app.get('/api/v1/owners/:id', (request, response) => {
       });
     }
   })
-  .catch(error => {
-    return response.status(500).json({error});
-  });
+  .catch(error => response.status(500).json({error}));
 });
 
 app.get('/api/v1/homes', (request, response) => {
