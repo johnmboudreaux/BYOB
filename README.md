@@ -90,14 +90,22 @@ When a request is made a response will be returned with one of the following sta
 
 > Below are the available endpoints included in the server
 
-- **[<code>GET</code> /api/v1/authenticate](documentation/GET_.md)**
+### Authenticate
+
+- **[<code>POST</code> /api/v1/authenticate](documentation/POST_authenticate.md)**
 
 ### Homes
-/api/v1/authenticate
 
 - **[<code>GET</code> /api/v1/homes](docs/GET_homes.md)**
-
+- **[<code>GET</code> /api/v1/owners/:id/homes](docs/GET_home_by_owner_id.md)**
+- **[<code>POST</code> /api/v1/owners/:id/homes](docs/POST_home_to_owner.md)**
+- **[<code>DELETE</code> /api/v1/homes/:id](docs/DELETE_home.md)**
+- **[<code>PUT</code> /api/v1/homes/:id](docs/PUT_home_by_id.md)**
 
 ### Owners
 
 - **[<code>GET</code> /api/v1/owners](docs/GET_owners.md)**
+- **[<code>GET</code> /api/v1/owners/:id](docs/GET_owners_by_id.md)**
+- **[<code>POST</code> /api/v1/owners](docs/POST_owners.md)**
+- **[<code>PUT</code> /api/v1/owners/:id](docs/PUT_owners_id.md)**
+- **[<code>DELETE</code> /api/v1/owners/:id](docs/DELETE_owner.md)**
