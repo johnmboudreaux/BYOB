@@ -83,6 +83,8 @@ const getToken = (email, appName) => {
     'appName': appName
   };
 
+  console.log('post body', postBody);
+
   fetch('/api/v1/authenticate', {
     method: 'POST',
     headers: {
@@ -91,12 +93,12 @@ const getToken = (email, appName) => {
     },
     body: JSON.stringify(postBody)
   }).then(response => {
-    console.log(response);
+    console.log('response', response);
     return response.json();
   }).then(token => {
-    console.log(token);
+    console.log('token', token);
     appendToken(token);
-  }).catch(error => console.log(error));
+  }).catch(error => console.log('catch error', error));
 };
 
 const appendToken = token => {
