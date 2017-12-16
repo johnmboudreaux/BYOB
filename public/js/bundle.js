@@ -70,8 +70,8 @@
 
 const getToken = (email, appName) => {
   let postBody = {
-    email: email,
-    appName: appName
+    'email': email,
+    'appName': appName
   };
 
   fetch('/api/v1/authenticate', {
