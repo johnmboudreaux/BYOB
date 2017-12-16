@@ -1,4 +1,4 @@
-## `DELETE` Authenticate
+## `DELETE` Owner
 
 ### **URL**
 
