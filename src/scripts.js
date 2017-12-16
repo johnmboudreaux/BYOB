@@ -1,3 +1,12 @@
+$('.input-form').on('click', '.submit-button', (event) => inputValues(event));
+
+const inputValues = (event) => {
+  event.preventDefault();
+  let email = $('.email-input').val();
+  let appName = $('.app-name').val();
+
+  getToken(email, appName);
+};
 
 const getToken = (email, appName) => {
   let postBody = {
@@ -13,23 +22,17 @@ const getToken = (email, appName) => {
     },
     body: JSON.stringify(postBody)
   })
-    .then(response => response.json())
     .then(response => {
-      appendToken(response);
+      console.log(response);
+      response.json();
+    })
+    .then(token => {
+      console.log(token);
+      appendToken(token);
     })
     .catch(error => console.log(error));
 };
 
-const appendToken = ({token}) => {
+const appendToken = ({ token }) => {
   $('.token-text').text(`Token: ${token}`);
 };
-
-const inputValues = (event) => {
-  event.preventDefault();
-  let email = $('.email-input').val();
-  let appName = $('.app-name').val();
-
-  getToken(email, appName);
-};
-
-$('.input-form').on('click', '.submit-button', (event) => inputValues(event));
