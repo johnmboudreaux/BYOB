@@ -199,6 +199,7 @@ app.put('/api/v1/owners/:id', checkAuth, (request, response) => {
   database('home_owner').where('id', id).update(updatedOwner, '*')
     .then(updatedOwner => {
       if (!updatedOwner.length){
+        console.log(response.status());
         return response.status(422).json({error: `Owner ID does not exist ${error}`});
       }
       return response.status(200).json(updatedOwner);

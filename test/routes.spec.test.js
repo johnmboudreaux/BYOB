@@ -541,4 +541,53 @@ describe('API Routes', () => {
     });
   });
 
+  describe('/api/v1/owners/:id', () => {
+  it('should return an error a property is missing', (done) => {
+    chai.request(server)
+      .put('/api/v1/owners/2')
+      .send({
+        id: 2,
+        firstName: 'ben the borifill',
+        streetAddress: '1234 borifill pl',
+        zipCode: 80058,
+        token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InVzZXJAdHVyaW5nLmlvIiwiYXBwTmFtZSI6InVzZXIiLCJhZG1pbiI6dHJ1ZSwiaWF0IjoxNTEzMjkyNzA4fQ.sT916KQPiD_sbT1Bkguu6VMvkwsWHUkAGHD_b7ul9wo'
+      })
+      .then((response) => {
+        response.should.have.status(422);
+        response.should.be.json;
+        response.body.should.be.a('object');
+        response.body.error.should.equal('You are missing the lastName property');
+        done();
+      })
+      .catch((error) => {
+        throw error;
+      });
+    });
+  });
+
+  describe('/api/v1/owners/:id', () => {
+  it('should return an error a property is missing', (done) => {
+    chai.request(server)
+      .put('/api/v1/owners/90')
+      .send({
+        id: 2,
+        firstName: 'ben the borifill',
+        lastName: 'porter',
+        streetAddress: '1234 borifill pl',
+        zipCode: 80058,
+        token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InNvbWVFbWFpbEB0dXJpbmcuaW8iLCJhcHBOYW1lIjoiYXBwTmFtZSIsImFkbWluIjp0cnVlLCJpYXQiOjE1MTMzMDIxMjR9.QS_7CB-WoiNjU_9dG5S6Fh0OiqG3fUD75W-8sjD38Vg'
+      })
+      .then((response) => {
+        response.should.have.status(422);
+        response.should.be.json;
+        response.body.should.be.a('object');
+        response.body.error.should.equal('Owner ID does not exist ${error}');
+        done();
+      })
+      .catch((error) => {
+        throw error;
+      });
+    });
+  });
+
 });
