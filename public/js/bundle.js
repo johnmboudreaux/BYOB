@@ -92,15 +92,15 @@ const getToken = (email, appName) => {
     body: JSON.stringify(postBody)
   }).then(response => {
     console.log(response);
-    response.json();
+    return response.json();
   }).then(token => {
     console.log(token);
     appendToken(token);
   }).catch(error => console.log(error));
 };
 
-const appendToken = ({ token }) => {
-  $('.token-text').text(`Token: ${token}`);
+const appendToken = token => {
+  $('.token-text').text(`Token: ${token.token}`);
 };
 
 /***/ })

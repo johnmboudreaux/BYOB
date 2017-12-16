@@ -24,7 +24,7 @@ const getToken = (email, appName) => {
   })
     .then(response => {
       console.log(response);
-      response.json();
+      return response.json();
     })
     .then(token => {
       console.log(token);
@@ -33,6 +33,6 @@ const getToken = (email, appName) => {
     .catch(error => console.log(error));
 };
 
-const appendToken = ({ token }) => {
-  $('.token-text').text(`Token: ${token}`);
+const appendToken = (token) => {
+  $('.token-text').text(`Token: ${token.token}`);
 };
