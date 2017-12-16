@@ -566,7 +566,7 @@ describe('API Routes', () => {
   });
 
   describe('PUT /api/v1/owners/:id', () => {
-  it.skip('should return an error if the owner does not exist', (done) => {
+  it('should return an error if the owner does not exist', (done) => {
     chai.request(server)
       .put('/api/v1/owners/90')
       .send({
@@ -710,7 +710,7 @@ describe('API Routes', () => {
   });
 
   describe('PUT /api/v1/homes/:id', () => {
-  it.skip('should return an error if home does not exist', (done) => {
+  it('should return an error if home does not exist', (done) => {
     chai.request(server)
       .put('/api/v1/homes/89')
       .send({
@@ -777,7 +777,7 @@ describe('API Routes', () => {
   describe('DELETE /api/v1/owners/:id', () => {
     it("should serve an error if token is invalid", (done) => {
       chai.request(server)
-        .delete('/api/v1/owners/90')
+        .delete('/api/v1/owners/1')
         .send({
           token: 'eiJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InNvbWVFbWFpbEB0dXJpbmcuaW8iLCJhcHBOYW1lIjoiYXBwTmFtZSIsImFkbWluIjp0cnVlLCJpYXQiOjE1MTMzMDIxMjR9.QS_7CB-WoiNjU_9dG5S6Fh0OiqG3fUD75W-8sjD38Vg'
         })
@@ -797,7 +797,84 @@ describe('API Routes', () => {
   describe('DELETE /api/v1/owners/:id', () => {
     it("should serve an error if token does not have admin rights", (done) => {
       chai.request(server)
-        .delete('/api/v1/owners/90')
+        .delete('/api/v1/owners/1')
+        .send({
+          token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InNvbWVFbWFpbEBlbWFpbC5jb20iLCJhcHBOYW1lIjoiYXBwTmFtZSIsImFkbWluIjpmYWxzZSwiaWF0IjoxNTEzMzAxOTg1fQ.7W_UQVD251kMfB-CvnUiQWWIIzY6hpLZxBn802-vt6k'
+        })
+        .then(response => {
+          response.should.have.status(403);
+          response.should.be.json;
+          response.body.should.be.a('object');
+          response.body.error.should.equal('Authorization is required null');
+          done();
+        })
+        .catch(error => {
+          throw error;
+        });
+    });
+  });
+
+  describe('DELETE /api/v1/homes/:id', () => {
+    it("should delete home from homes table", (done) => {
+      chai.request(server)
+        .delete('/api/v1/homes/1')
+        .send({
+          token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InNvbWVFbWFpbEB0dXJpbmcuaW8iLCJhcHBOYW1lIjoiYXBwTmFtZSIsImFkbWluIjp0cnVlLCJpYXQiOjE1MTMzMDIxMjR9.QS_7CB-WoiNjU_9dG5S6Fh0OiqG3fUD75W-8sjD38Vg'
+        })
+        .then(response => {
+          response.should.have.status(204);
+          done();
+        })
+        .catch(error => {
+          throw error;
+        });
+    });
+  });
+
+  describe('DELETE /api/v1/homes/:id', () => {
+    it("should serve an error if home does not exist", (done) => {
+      chai.request(server)
+        .delete('/api/v1/homes/90')
+        .send({
+          token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InNvbWVFbWFpbEB0dXJpbmcuaW8iLCJhcHBOYW1lIjoiYXBwTmFtZSIsImFkbWluIjp0cnVlLCJpYXQiOjE1MTMzMDIxMjR9.QS_7CB-WoiNjU_9dG5S6Fh0OiqG3fUD75W-8sjD38Vg'
+        })
+        .then(response => {
+          response.should.have.status(422);
+          response.should.be.json;
+          response.body.should.be.a('object');
+          response.body.error.should.equal('Nothing to delete with id 90');
+          done();
+        })
+        .catch(error => {
+          throw error;
+        });
+    });
+  });
+
+  describe('DELETE /api/v1/homes/:id', () => {
+    it("should serve an error if token is invalid", (done) => {
+      chai.request(server)
+        .delete('/api/v1/homes/1')
+        .send({
+          token: 'eiJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InNvbWVFbWFpbEB0dXJpbmcuaW8iLCJhcHBOYW1lIjoiYXBwTmFtZSIsImFkbWluIjp0cnVlLCJpYXQiOjE1MTMzMDIxMjR9.QS_7CB-WoiNjU_9dG5S6Fh0OiqG3fUD75W-8sjD38Vg'
+        })
+        .then(response => {
+          response.should.have.status(403);
+          response.should.be.json;
+          response.body.should.be.a('object');
+          response.body.error.should.equal('Invalid token JsonWebTokenError: invalid token');
+          done();
+        })
+        .catch(error => {
+          throw error;
+        });
+    });
+  });
+
+  describe('DELETE /api/v1/homes/:id', () => {
+    it("should serve an error if token does not have admin rights", (done) => {
+      chai.request(server)
+        .delete('/api/v1/homes/1')
         .send({
           token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InNvbWVFbWFpbEBlbWFpbC5jb20iLCJhcHBOYW1lIjoiYXBwTmFtZSIsImFkbWluIjpmYWxzZSwiaWF0IjoxNTEzMzAxOTg1fQ.7W_UQVD251kMfB-CvnUiQWWIIzY6hpLZxBn802-vt6k'
         })

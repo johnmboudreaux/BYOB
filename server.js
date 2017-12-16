@@ -198,7 +198,7 @@ app.put('/api/v1/owners/:id', checkAuth, (request, response) => {
   database('home_owner').where('id', id).update(updatedOwner, '*')
     .then(updatedOwner => {
       if (!updatedOwner.length){
-        return response.status(422).json({error: `Owner ID does not exist ${error}`});
+        return response.status(422).json({error: `Owner ID does not exist`});
       }
       return response.status(200).json(updatedOwner);
     })
@@ -225,7 +225,7 @@ app.put('/api/v1/homes/:id', checkAuth, (request, response) => {
   database('homes').where('id', id).update(updatedHome, '*')
     .then(updatedHome => {
       if (!updatedHome.length){
-        return response.status(422).json({error: `Home ID does not exist ${error}`});
+        return response.status(422).json({error: `Home ID does not exist`});
       }
       return response.status(200).json(updatedHome);
     })
