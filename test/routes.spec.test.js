@@ -542,7 +542,7 @@ describe('API Routes', () => {
   });
 
   describe('/api/v1/owners/:id', () => {
-  it('should return an error a property is missing', (done) => {
+  it('should return an error if a property is missing', (done) => {
     chai.request(server)
       .put('/api/v1/owners/2')
       .send({
@@ -566,7 +566,7 @@ describe('API Routes', () => {
   });
 
   describe('/api/v1/owners/:id', () => {
-  it('should return an error a property is missing', (done) => {
+  it.skip('should return an error if the owner does not exist', (done) => {
     chai.request(server)
       .put('/api/v1/owners/90')
       .send({
@@ -581,7 +581,98 @@ describe('API Routes', () => {
         response.should.have.status(422);
         response.should.be.json;
         response.body.should.be.a('object');
-        response.body.error.should.equal('Owner ID does not exist ${error}');
+        response.body.error.should.equal('Owner ID does not exist');
+        done();
+      })
+      .catch((error) => {
+        throw error;
+      });
+    });
+  });
+
+  describe('/api/v1/homes/:id', () => {
+  it('should return an updated home', (done) => {
+    chai.request(server)
+      .put('/api/v1/homes/2')
+      .send({
+        id: 2,
+        houseName: 'luxury',
+        description: 'holy magoly',
+        bedrooms: 4,
+        bathrooms: 4,
+        houseAddress: '1234 down the road lane',
+        zipCode: 80004,
+        ownerId: 4,
+        token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InVzZXJAdHVyaW5nLmlvIiwiYXBwTmFtZSI6InVzZXIiLCJhZG1pbiI6dHJ1ZSwiaWF0IjoxNTEzMjkyNzA4fQ.sT916KQPiD_sbT1Bkguu6VMvkwsWHUkAGHD_b7ul9wo'
+      })
+      .then((response) => {
+        response.should.have.status(200);
+        response.should.be.json;
+        response.body.should.be.a('array');
+        response.body.length.should.equal(1);
+        response.body[0].id.should.equal(2);
+        response.body[0].houseName.should.equal('luxury');
+        response.body[0].description.should.equal('holy magoly');
+        response.body[0].bedrooms.should.equal(4);
+        response.body[0].bathrooms.should.equal(4);
+        response.body[0].houseAddress.should.equal('1234 down the road lane');
+        response.body[0].zipCode.should.equal(80004);
+        response.body[0].ownerId.should.equal(4);
+        done();
+      })
+      .catch((error) => {
+        throw error;
+      });
+    });
+  });
+
+  describe('/api/v1/homes/:id', () => {
+  it('should return an error if a property is missing', (done) => {
+    chai.request(server)
+      .put('/api/v1/homes/2')
+      .send({
+        id: 2,
+        houseName: 'luxury',
+        description: 'holy magoly',
+        bathrooms: 4,
+        houseAddress: '1234 down the road lane',
+        zipCode: 80004,
+        ownerId: 4,
+        token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InVzZXJAdHVyaW5nLmlvIiwiYXBwTmFtZSI6InVzZXIiLCJhZG1pbiI6dHJ1ZSwiaWF0IjoxNTEzMjkyNzA4fQ.sT916KQPiD_sbT1Bkguu6VMvkwsWHUkAGHD_b7ul9wo'
+      })
+      .then((response) => {
+        response.should.have.status(422);
+        response.should.be.json;
+        response.body.should.be.a('object');
+        response.body.error.should.equal('You are missing the bedrooms property');
+        done();
+      })
+      .catch((error) => {
+        throw error;
+      });
+    });
+  });
+
+  describe('/api/v1/homes/:id', () => {
+  it('should return an error if token is invalid', (done) => {
+    chai.request(server)
+      .put('/api/v1/homes/2')
+      .send({
+        id: 2,
+        houseName: 'luxury',
+        description: 'holy magoly',
+        bendrooms: 4,
+        bathrooms: 4,
+        houseAddress: '1234 down the road lane',
+        zipCode: 80004,
+        ownerId: 4,
+        token: 'eiJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InVzZXJAdHVyaW5nLmlvIiwiYXBwTmFtZSI6InVzZXIiLCJhZG1pbiI6dHJ1ZSwiaWF0IjoxNTEzMjkyNzA4fQ.sT916KQPiD_sbT1Bkguu6VMvkwsWHUkAGHD_b7ul9wo'
+      })
+      .then((response) => {
+        response.should.have.status(403);
+        response.should.be.json;
+        response.body.should.be.a('object');
+        response.body.error.should.equal('Invalid token JsonWebTokenError: invalid token');
         done();
       })
       .catch((error) => {

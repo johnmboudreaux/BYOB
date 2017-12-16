@@ -186,7 +186,6 @@ app.put('/api/v1/owners/:id', checkAuth, (request, response) => {
   const { id } = request.params;
   delete updatedOwner.token;
 
-
   for ( let requiredParameter of ['firstName', 'lastName', 'streetAddress', 'zipCode']) {
     if (!updatedOwner[requiredParameter]){
       return response.status(422).json({
@@ -199,7 +198,6 @@ app.put('/api/v1/owners/:id', checkAuth, (request, response) => {
   database('home_owner').where('id', id).update(updatedOwner, '*')
     .then(updatedOwner => {
       if (!updatedOwner.length){
-        console.log(response.status());
         return response.status(422).json({error: `Owner ID does not exist ${error}`});
       }
       return response.status(200).json(updatedOwner);
@@ -212,6 +210,7 @@ app.put('/api/v1/owners/:id', checkAuth, (request, response) => {
 app.put('/api/v1/homes/:id', checkAuth, (request, response) => {
   let updatedHome = request.body;
   const { id } = request.params;
+  delete updatedHome.token;
 
   for ( let requiredParameter of ['houseName', 'houseAddress', 'description', 'bathrooms', 'bedrooms', 'zipCode', 'ownerId']) {
     if (!updatedHome[requiredParameter]){
