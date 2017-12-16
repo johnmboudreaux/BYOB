@@ -90,12 +90,12 @@ When a request is made a response will be returned with one of the following sta
 
 > Below are the available endpoints included in the server
 
-- **[<code>GET</code> /api/v1/authenticate`?abv=NUM`](documentation/GET_.md)**
+- **[<code>GET</code> /api/v1/authenticate](documentation/GET_.md)**
 
 ### Homes
 /api/v1/authenticate
 
-- **[<code>GET</code> /api/v1/beers`?abv=NUM`](docs/GET_homes.md)**
+- **[<code>GET</code> /api/v1/homes](docs/GET_homes.md)**
 
 
 ### Owners
