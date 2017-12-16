@@ -186,7 +186,6 @@ app.put('/api/v1/owners/:id', checkAuth, (request, response) => {
   const { id } = request.params;
   delete updatedOwner.token;
 
-
   for ( let requiredParameter of ['firstName', 'lastName', 'streetAddress', 'zipCode']) {
     if (!updatedOwner[requiredParameter]){
       return response.status(422).json({
@@ -199,7 +198,7 @@ app.put('/api/v1/owners/:id', checkAuth, (request, response) => {
   database('home_owner').where('id', id).update(updatedOwner, '*')
     .then(updatedOwner => {
       if (!updatedOwner.length){
-        return response.status(422).json({error: `Owner ID does not exist ${error}`});
+        return response.status(422).json({error: `Owner ID does not exist`});
       }
       return response.status(200).json(updatedOwner);
     })
@@ -211,6 +210,7 @@ app.put('/api/v1/owners/:id', checkAuth, (request, response) => {
 app.put('/api/v1/homes/:id', checkAuth, (request, response) => {
   let updatedHome = request.body;
   const { id } = request.params;
+  delete updatedHome.token;
 
   for ( let requiredParameter of ['houseName', 'houseAddress', 'description', 'bathrooms', 'bedrooms', 'zipCode', 'ownerId']) {
     if (!updatedHome[requiredParameter]){
@@ -225,7 +225,7 @@ app.put('/api/v1/homes/:id', checkAuth, (request, response) => {
   database('homes').where('id', id).update(updatedHome, '*')
     .then(updatedHome => {
       if (!updatedHome.length){
-        return response.status(422).json({error: `Owner ID does not exist ${error}`});
+        return response.status(422).json({error: `Home ID does not exist`});
       }
       return response.status(200).json(updatedHome);
     })
@@ -236,13 +236,11 @@ app.put('/api/v1/homes/:id', checkAuth, (request, response) => {
 
 app.delete('/api/v1/owners/:id', checkAuth, (request, response) => {
   const { id } = request.params;
+  delete request.body.token;
 
   database('homes').where('ownerId', id).del()
-    .then(response => {
-      return response.status(204);
-    })
     .catch(error => {
-      response.status(500).json({ error });
+      response.status(500).json({error: `Internal server error ${error}`});
     });
 
   database('home_owner').where('id', id).del()
@@ -257,11 +255,12 @@ app.delete('/api/v1/owners/:id', checkAuth, (request, response) => {
 
 app.delete('/api/v1/homes/:id', checkAuth, (request, response) => {
   const { id } = request.params;
+  delete request.body.token;
 
   database('homes').where('ownerId', id).del()
     .then(length => {
       length ? response.sendStatus(204) : response.status(422)
-        .send({ error: `Nothing to delete with id ${id}`});
+        .json({ error: `Nothing to delete with id ${id}`});
     })
     .catch(error => {
       response.status(500).json({ error });
