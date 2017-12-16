@@ -11,7 +11,6 @@ const jwt = require('jsonwebtoken');
 
 require('dotenv').config();
 
-app.set('secretKey', process.env.SECRET_KEY);
 app.set('port', process.env.PORT || 3000);
 
 app.use(bodyParser.json());
@@ -37,7 +36,7 @@ const checkAuth = (request, response, next) => {
     return response.status(403).json({ error: `Authorization is required ${error}` });
   }
 
-  jwt.verify(token, app.get('secretKey'), (error, decoded) => {
+  jwt.verify(token, process.env.SECRET_KEY, (error, decoded) => {
     if (error) {
       return response.status(403).json({ error: `Invalid token ${ error }` });
     }
@@ -62,7 +61,7 @@ app.post('/api/v1/authenticate', (request, response) => {
     :
     Object.assign({}, { email, appName, admin: false });
 
-  const token = jwt.sign(adminCheck, app.get('secretKey'));
+  const token = jwt.sign(adminCheck, process.env.SECRET_KEY);
   return response.status(201).json({ token });
 });
 
