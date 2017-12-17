@@ -1,8 +1,6 @@
-/*eslint-disable */
 const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
-const path = require('path');
 
 const environment = process.env.NODE_ENV || 'development';
 const configuration = require('./knexfile')[environment];
