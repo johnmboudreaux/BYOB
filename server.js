@@ -1,8 +1,8 @@
-/*eslint-disable */
+
 const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
-const path = require('path');
+// const path = require('path');
 
 const environment = process.env.NODE_ENV || 'development';
 const configuration = require('./knexfile')[environment];
@@ -18,19 +18,9 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(__dirname + '/public'));
 
 const checkAuth = (request, response, next) => {
-  let token;
-
-  if (request.headers.authorization) {
-    token = request.headers.authorization;
-  }
-
-  if (request.body.token) {
-    token = request.body.token;
-  }
-
-  if (request.query.token) {
-    token = request.query.token;
-  }
+  let token = request.body.token ||
+              request.param('token') ||
+              request.headers['authorization'];
 
   if (!token) {
     return response.status(403).json({ error: `Authorization is required ${error}` });
@@ -42,8 +32,8 @@ const checkAuth = (request, response, next) => {
     }
     if (decoded) {
       decoded.admin ? next()
-      :
-      response.status(403).json({ error: `Authorization is required ${error}` });
+        :
+        response.status(403).json({ error: `Authorization is required ${error}` });
     }
   });
 };
@@ -68,27 +58,23 @@ app.post('/api/v1/authenticate', (request, response) => {
 app.get('/api/v1/owners', (request, response) => {
   database('home_owner').select()
     .then(owners => response.status(200).json(owners))
-    .catch(error => {
-      return response.status(500).json({
-        error: `internal server error ${error}`
-      });
-    });
+    .catch(error => response.status(500).json({error: `internal server error ${error}`}));
 });
 
 app.get('/api/v1/owners/:id', (request, response) => {
   const id = request.params.id;
 
   database('home_owner').where('id', id).select()
-  .then(owner => {
-    if (owner.length){
-      return response.status(200).json(owner);
-    } else {
-      return response.status(404).json({
-        error: `Could not find owner with id: ${id}`
-      });
-    }
-  })
-  .catch(error => response.status(500).json({error}));
+    .then(owner => {
+      if (owner.length){
+        return response.status(200).json(owner);
+      } else {
+        return response.status(404).json({
+          error: `Could not find owner with id: ${id}`
+        });
+      }
+    })
+    .catch(error => response.status(500).json({error}));
 });
 
 app.get('/api/v1/homes', (request, response) => {
@@ -107,9 +93,7 @@ app.get('/api/v1/homes', (request, response) => {
         :
         response.status(404).json({error: `No home with ${queryParam} found`})
       )
-      .catch(error => {
-        response.status(500).json({error: `Internal server error ${error}`});
-      });
+      .catch(error => response.status(500).json({error: `Internal server error ${error}`}));
   }
 });
 
@@ -126,9 +110,7 @@ app.get('/api/v1/owners/:id/homes', (request, response) => {
         });
       }
     })
-    .catch(error => {
-      return response.status(500).json({error: `Internal server error ${error}`});
-    });
+    .catch(error => esponse.status(500).json({error: `Internal server error ${error}`}));
 });
 
 
@@ -145,12 +127,8 @@ app.post('/api/v1/owners', checkAuth, (request, response) => {
   }
 
   database('home_owner').insert(newOwner, '*')
-    .then(insertedOwner => {
-      return response.status(201).json(insertedOwner);
-    })
-    .catch(error => {
-      return response.status(500).json({ error });
-    });
+    .then(insertedOwner => response.status(201).json(insertedOwner))
+    .catch(error => response.status(500).json({ error }));
 });
 
 app.post('/api/v1/owners/:id/homes', checkAuth, (request, response) => {
@@ -168,12 +146,8 @@ app.post('/api/v1/owners/:id/homes', checkAuth, (request, response) => {
   home = Object.assign({}, home, { ownerId: id });
 
   database('homes').insert(home, '*')
-    .then(insertedHome => {
-      return response.status(201).json(insertedHome);
-    })
-    .catch(error => {
-      return response.status(500).json({ error: `Internal Server Error ${error}`});
-    });
+    .then(insertedHome => response.status(201).json(insertedHome))
+    .catch(error => response.status(500).json({ error: `Internal Server Error ${error}`}));
 });
 
 app.put('/api/v1/owners/:id', checkAuth, (request, response) => {
@@ -197,9 +171,7 @@ app.put('/api/v1/owners/:id', checkAuth, (request, response) => {
       }
       return response.status(200).json(updatedOwner);
     })
-    .catch(error => {
-      return response.status(500).json({error: `Internal server error ${error}`});
-    });
+    .catch(error => response.status(500).json({error: `Internal server error ${error}`}));
 });
 
 app.put('/api/v1/homes/:id', checkAuth, (request, response) => {
@@ -224,9 +196,7 @@ app.put('/api/v1/homes/:id', checkAuth, (request, response) => {
       }
       return response.status(200).json(updatedHome);
     })
-    .catch(error => {
-      return response.status(500).json({error: `Internal server error ${error}`});
-    });
+    .catch(error => response.status(500).json({error: `Internal server error ${error}`}));
 });
 
 app.delete('/api/v1/owners/:id', checkAuth, (request, response) => {
@@ -234,18 +204,14 @@ app.delete('/api/v1/owners/:id', checkAuth, (request, response) => {
   delete request.body.token;
 
   database('homes').where('ownerId', id).del()
-    .catch(error => {
-      response.status(500).json({error: `Internal server error ${error}`});
-    });
+    .catch(error => response.status(500).json({error: `Internal server error ${error}`}));
 
   database('home_owner').where('id', id).del()
     .then(length => {
       length ? response.sendStatus(204) : response.status(422)
         .send({ error: `Nothing to delete with id ${id}`});
     })
-    .catch(error => {
-      response.status(500).json({ error });
-    });
+    .catch(error => response.status(500).json({ error }));
 });
 
 app.delete('/api/v1/homes/:id', checkAuth, (request, response) => {
@@ -257,9 +223,7 @@ app.delete('/api/v1/homes/:id', checkAuth, (request, response) => {
       length ? response.sendStatus(204) : response.status(422)
         .json({ error: `Nothing to delete with id ${id}`});
     })
-    .catch(error => {
-      response.status(500).json({ error });
-    });
+    .catch(error => response.status(500).json({ error }));
 
 });
 

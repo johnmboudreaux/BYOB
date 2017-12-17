@@ -22,12 +22,8 @@ const getToken = (email, appName) => {
     },
     body: JSON.stringify(postBody)
   })
-    .then(response => {
-      return response.json();
-    })
-    .then(token => {
-      appendToken(token);
-    })
+    .then(response => response.json())
+    .then(token => { appendToken(token); })
     .catch(error => console.log(error));
 };
 

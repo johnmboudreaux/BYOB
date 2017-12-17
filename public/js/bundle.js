@@ -89,9 +89,7 @@ const getToken = (email, appName) => {
       'Content-Type': 'application/json'
     },
     body: JSON.stringify(postBody)
-  }).then(response => {
-    return response.json();
-  }).then(token => {
+  }).then(response => response.json()).then(token => {
     appendToken(token);
   }).catch(error => console.log(error));
 };
