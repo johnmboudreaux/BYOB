@@ -182,12 +182,11 @@ app.put('/api/v1/homes/:id', checkAuth, (request, response) => {
   updatedHome = Object.assign({}, updatedHome, {id: id});
 
   database('homes').where('id', id).update(updatedHome, '*')
-    .then(updatedHome => {
-      if (!updatedHome.length){
-        return response.status(422).json({error: `Home ID does not exist`});
-      }
-      return response.status(201).json(updatedHome);
-    })
+    .then(updatedHome => !updatedHome.length ?
+      response.status(422).json({error: `Home ID does not exist`})
+      :
+      response.status(201).json(updatedHome)
+    )
     .catch(error => response.status(500).json({error: `Internal server error ${error}`}));
 });
 
