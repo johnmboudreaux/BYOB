@@ -64,50 +64,43 @@ app.get('/api/v1/owners/:id', (request, response) => {
 
   database('home_owner').where('id', id).select()
     .then(owner => {
-      if (owner.length){
-        return response.status(200).json(owner);
-      } else {
-        return response.status(404).json({
+      owner.length ? response.status(200).json(owner)
+        :
+        response.status(404).json({
           error: `Could not find owner with id: ${id}`
         });
-      }
     })
-    .catch(error => response.status(500).json({error}));
+    .catch(error => response.status(500).json({error})
+    );
 });
 
 app.get('/api/v1/homes', (request, response) => {
   const queryParam = Object.keys(request.query)[0];
   const queryParamValue = request.query[queryParam];
 
-  if (!queryParam) {
-    database('homes').select()
-      .then(homes => response.status(200).json(homes))
-      .catch(error => response.status(500).json({ error: `internal server error ${error}`}));
-  } else {
+  !queryParam ? database('homes').select()
+    .then(homes => response.status(200).json(homes))
+    .catch(error => response.status(500).json({ error: `internal server error ${error}`}))
+    :
     database('homes').where(queryParam, queryParamValue).select()
-
       .then(homes => homes.length ?
         response.status(200).json(homes)
         :
         response.status(404).json({error: `No home with ${queryParam} found`})
       )
       .catch(error => response.status(500).json({error: `Internal server error ${error}`}));
-  }
 });
 
 app.get('/api/v1/owners/:id/homes', (request, response) => {
   const ownerId = request.params.id;
 
   database('homes').where('ownerId', ownerId).select()
-    .then(home => {
-      if (home.length){
-        return response.status(200).json(home);
-      } else {
-        return response.status(404).json({
-          error: `Could not find home with id: ${ownerId}`
-        });
-      }
-    })
+    .then(home => home.length ?
+      response.status(200).json(home)
+      :
+      response.status(404).json({
+        error: `Could not find home with id: ${ownerId}`
+      }))
     .catch(error => esponse.status(500).json({error: `Internal server error ${error}`}));
 });
 
@@ -163,12 +156,11 @@ app.put('/api/v1/owners/:id', checkAuth, (request, response) => {
   updatedOwner = Object.assign({}, updatedOwner, {id: id});
 
   database('home_owner').where('id', id).update(updatedOwner, '*')
-    .then(updatedOwner => {
-      if (!updatedOwner.length){
-        return response.status(422).json({error: `Owner ID does not exist`});
-      }
-      return response.status(200).json(updatedOwner);
-    })
+    .then(updatedOwner => !updatedOwner.length ?
+      response.status(422).json({error: `Owner ID does not exist`})
+      :
+      response.status(201).json(updatedOwner)
+    )
     .catch(error => response.status(500).json({error: `Internal server error ${error}`}));
 });
 
@@ -188,12 +180,11 @@ app.put('/api/v1/homes/:id', checkAuth, (request, response) => {
   updatedHome = Object.assign({}, updatedHome, {id: id});
 
   database('homes').where('id', id).update(updatedHome, '*')
-    .then(updatedHome => {
-      if (!updatedHome.length){
-        return response.status(422).json({error: `Home ID does not exist`});
-      }
-      return response.status(200).json(updatedHome);
-    })
+    .then(updatedHome => !updatedHome.length ?
+      response.status(422).json({error: `Home ID does not exist`})
+      :
+      response.status(201).json(updatedHome)
+    )
     .catch(error => response.status(500).json({error: `Internal server error ${error}`}));
 });
 
@@ -205,10 +196,11 @@ app.delete('/api/v1/owners/:id', checkAuth, (request, response) => {
     .catch(error => response.status(500).json({error: `Internal server error ${error}`}));
 
   database('home_owner').where('id', id).del()
-    .then(length => {
-      length ? response.sendStatus(204) : response.status(422)
-        .send({ error: `Nothing to delete with id ${id}`});
-    })
+    .then(owner =>  owner ?
+      response.sendStatus(204)
+      :
+      response.status(422).json({ error: `Nothing to delete with id ${id}`})
+    )
     .catch(error => response.status(500).json({ error }));
 });
 
@@ -217,10 +209,11 @@ app.delete('/api/v1/homes/:id', checkAuth, (request, response) => {
   delete request.body.token;
 
   database('homes').where('ownerId', id).del()
-    .then(length => {
-      length ? response.sendStatus(204) : response.status(422)
-        .json({ error: `Nothing to delete with id ${id}`});
-    })
+    .then(home => home ?
+      response.sendStatus(204)
+      :
+      response.status(422).json({ error: `Nothing to delete with id ${id}`})
+    )
     .catch(error => response.status(500).json({ error }));
 
 });

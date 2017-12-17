@@ -56,8 +56,8 @@ describe('API Routes', () => {
       chai.request(server)
         .post('/api/v1/authenticate')
         .send({
-	         "email": "someEmail@turing.io",
-	         "appName": "appName"
+          "email": "someEmail@turing.io",
+          "appName": "appName"
         })
         .then(response => {
           response.should.have.status(201);
@@ -96,43 +96,43 @@ describe('API Routes', () => {
   });
 
   describe('GET /api/v1/owners/:id', () => {
-  it('should return a specific owner', (done) => {
-    chai.request(server)
-      .get('/api/v1/owners/1')
-      .then((response) => {
-        response.should.have.status(200);
-        response.should.be.json;
-        response.body.should.be.a('array');
-        response.body.length.should.equal(1);
-        response.body[0].id.should.equal(1);
-        response.body[0].firstName.should.equal('John');
-        response.body[0].lastName.should.equal('Boudreaux');
-        response.body[0].streetAddress.should.equal('6825 Garrison St.');
-        response.body[0].zipCode.should.equal(80004);
-        response.body[0].should.have.property('created_at');
-        response.body[0].should.have.property('updated_at');
-        done();
-      })
-      .catch((error) => {
-        throw error;
-      });
+    it('should return a specific owner', (done) => {
+      chai.request(server)
+        .get('/api/v1/owners/1')
+        .then((response) => {
+          response.should.have.status(200);
+          response.should.be.json;
+          response.body.should.be.a('array');
+          response.body.length.should.equal(1);
+          response.body[0].id.should.equal(1);
+          response.body[0].firstName.should.equal('John');
+          response.body[0].lastName.should.equal('Boudreaux');
+          response.body[0].streetAddress.should.equal('6825 Garrison St.');
+          response.body[0].zipCode.should.equal(80004);
+          response.body[0].should.have.property('created_at');
+          response.body[0].should.have.property('updated_at');
+          done();
+        })
+        .catch((error) => {
+          throw error;
+        });
     });
   });
 
   describe('GET /api/v1/owners/:id', () => {
-  it('should return 404 error for owner that does not exist', (done) => {
-    chai.request(server)
-      .get('/api/v1/owners/100')
-      .then((response) => {
-        response.should.have.status(404);
-        response.should.be.json;
-        response.body.should.be.a('object');
-        response.body.error.should.equal('Could not find owner with id: 100');
-        done();
-      })
-      .catch((error) => {
-        throw error;
-      });
+    it('should return 404 error for owner that does not exist', (done) => {
+      chai.request(server)
+        .get('/api/v1/owners/100')
+        .then((response) => {
+          response.should.have.status(404);
+          response.should.be.json;
+          response.body.should.be.a('object');
+          response.body.error.should.equal('Could not find owner with id: 100');
+          done();
+        })
+        .catch((error) => {
+          throw error;
+        });
     });
   });
 
@@ -197,44 +197,44 @@ describe('API Routes', () => {
   });
 
   describe('GET /api/v1/owners/:id/homes', () => {
-  it('should return a homes for specific owner', (done) => {
-    chai.request(server)
-      .get('/api/v1/owners/1/homes')
-      .then((response) => {
-        response.should.have.status(200);
-        response.should.be.json;
-        response.body.should.be.a('array');
-        response.body.length.should.equal(3);
-        response.body[0].id.should.equal(1);
-        response.body[0].houseName.should.equal('Cloud House');
-        response.body[0].description.should.equal('Lorem ipsum dolor sit amet, nam ea impetus discere, vel laoreet accumsan noluisse an. Altera petentium eos et, ei commodo virtute sanctus mei.');
-        response.body[0].houseAddress.should.equal('2104 Westfall Avenue');
-        response.body[0].bathrooms.should.equal(5);
-        response.body[0].bedrooms.should.equal(5);
-        response.body[0].zipCode.should.equal(80221);
-        response.body[0].ownerId.should.equal(1);
-        done();
-      })
-      .catch((error) => {
-        throw error;
-      });
+    it('should return a homes for specific owner', (done) => {
+      chai.request(server)
+        .get('/api/v1/owners/1/homes')
+        .then((response) => {
+          response.should.have.status(200);
+          response.should.be.json;
+          response.body.should.be.a('array');
+          response.body.length.should.equal(3);
+          response.body[0].id.should.equal(1);
+          response.body[0].houseName.should.equal('Cloud House');
+          response.body[0].description.should.equal('Lorem ipsum dolor sit amet, nam ea impetus discere, vel laoreet accumsan noluisse an. Altera petentium eos et, ei commodo virtute sanctus mei.');
+          response.body[0].houseAddress.should.equal('2104 Westfall Avenue');
+          response.body[0].bathrooms.should.equal(5);
+          response.body[0].bedrooms.should.equal(5);
+          response.body[0].zipCode.should.equal(80221);
+          response.body[0].ownerId.should.equal(1);
+          done();
+        })
+        .catch((error) => {
+          throw error;
+        });
     });
   });
 
   describe('GET /api/v1/owners/:id/homes', () => {
-  it('should return a homes for specific owner', (done) => {
-    chai.request(server)
-      .get('/api/v1/owners/170/homes')
-      .then((response) => {
+    it('should return a homes for specific owner', (done) => {
+      chai.request(server)
+        .get('/api/v1/owners/170/homes')
+        .then((response) => {
           response.should.have.status(404);
           response.should.be.json;
           response.body.should.be.a('object');
           response.body.error.should.equal('Could not find home with id: 170');
-        done();
-      })
-      .catch((error) => {
-        throw error;
-      });
+          done();
+        })
+        .catch((error) => {
+          throw error;
+        });
     });
   });
 
@@ -462,278 +462,278 @@ describe('API Routes', () => {
   });
 
   describe('PUT /api/v1/owners/:id', () => {
-  it('should return an updated home owner', (done) => {
-    chai.request(server)
-      .put('/api/v1/owners/2')
-      .send({
-        id: 2,
-        firstName: 'ben the borifill',
-        lastName: 'porter',
-        streetAddress: '1234 borifill pl',
-        zipCode: 80058,
-        token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InVzZXJAdHVyaW5nLmlvIiwiYXBwTmFtZSI6InVzZXIiLCJhZG1pbiI6dHJ1ZSwiaWF0IjoxNTEzMjkyNzA4fQ.sT916KQPiD_sbT1Bkguu6VMvkwsWHUkAGHD_b7ul9wo'
-      })
-      .then((response) => {
-        response.should.have.status(200);
-        response.should.be.json;
-        response.body.should.be.a('array');
-        response.body.length.should.equal(1);
-        response.body[0].id.should.equal(2);
-        response.body[0].firstName.should.equal('ben the borifill');
-        response.body[0].lastName.should.equal('porter');
-        response.body[0].streetAddress.should.equal('1234 borifill pl');
-        response.body[0].zipCode.should.equal(80058);
-        done();
-      })
-      .catch((error) => {
-        throw error;
-      });
+    it('should return an updated home owner', (done) => {
+      chai.request(server)
+        .put('/api/v1/owners/2')
+        .send({
+          id: 2,
+          firstName: 'ben the borifill',
+          lastName: 'porter',
+          streetAddress: '1234 borifill pl',
+          zipCode: 80058,
+          token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InVzZXJAdHVyaW5nLmlvIiwiYXBwTmFtZSI6InVzZXIiLCJhZG1pbiI6dHJ1ZSwiaWF0IjoxNTEzMjkyNzA4fQ.sT916KQPiD_sbT1Bkguu6VMvkwsWHUkAGHD_b7ul9wo'
+        })
+        .then((response) => {
+          response.should.have.status(201);
+          response.should.be.json;
+          response.body.should.be.a('array');
+          response.body.length.should.equal(1);
+          response.body[0].id.should.equal(2);
+          response.body[0].firstName.should.equal('ben the borifill');
+          response.body[0].lastName.should.equal('porter');
+          response.body[0].streetAddress.should.equal('1234 borifill pl');
+          response.body[0].zipCode.should.equal(80058);
+          done();
+        })
+        .catch((error) => {
+          throw error;
+        });
     });
   });
 
   describe('PUT /api/v1/owners/:id', () => {
-  it('should return an error if token is invalid', (done) => {
-    chai.request(server)
-      .put('/api/v1/owners/2')
-      .send({
-        id: 2,
-        firstName: 'ben the borifill',
-        lastName: 'porter',
-        streetAddress: '1234 borifill pl',
-        zipCode: 80058,
-        token: 'eiJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InVzZXJAdHVyaW5nLmlvIiwiYXBwTmFtZSI6InVzZXIiLCJhZG1pbiI6dHJ1ZSwiaWF0IjoxNTEzMjkyNzA4fQ.sT916KQPiD_sbT1Bkguu6VMvkwsWHUkAGHD_b7ul9wo'
-      })
-      .then((response) => {
-        response.should.have.status(403);
-        response.should.be.json;
-        response.body.should.be.a('object');
-        response.body.error.should.equal('Invalid token JsonWebTokenError: invalid token');
-        done();
-      })
-      .catch((error) => {
-        throw error;
-      });
+    it('should return an error if token is invalid', (done) => {
+      chai.request(server)
+        .put('/api/v1/owners/2')
+        .send({
+          id: 2,
+          firstName: 'ben the borifill',
+          lastName: 'porter',
+          streetAddress: '1234 borifill pl',
+          zipCode: 80058,
+          token: 'eiJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InVzZXJAdHVyaW5nLmlvIiwiYXBwTmFtZSI6InVzZXIiLCJhZG1pbiI6dHJ1ZSwiaWF0IjoxNTEzMjkyNzA4fQ.sT916KQPiD_sbT1Bkguu6VMvkwsWHUkAGHD_b7ul9wo'
+        })
+        .then((response) => {
+          response.should.have.status(403);
+          response.should.be.json;
+          response.body.should.be.a('object');
+          response.body.error.should.equal('Invalid token JsonWebTokenError: invalid token');
+          done();
+        })
+        .catch((error) => {
+          throw error;
+        });
     });
   });
 
   describe('PUT /api/v1/owners/:id', () => {
-  it('should return an error if token does not have admin permission', (done) => {
-    chai.request(server)
-      .put('/api/v1/owners/2')
-      .send({
-        id: 2,
-        firstName: 'ben the borifill',
-        lastName: 'porter',
-        streetAddress: '1234 borifill pl',
-        zipCode: 80058,
-        token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InNvbWVFbWFpbEBlbWFpbC5jb20iLCJhcHBOYW1lIjoiYXBwTmFtZSIsImFkbWluIjpmYWxzZSwiaWF0IjoxNTEzMzAxOTg1fQ.7W_UQVD251kMfB-CvnUiQWWIIzY6hpLZxBn802-vt6'
-      })
-      .then((response) => {
-        response.should.have.status(403);
-        response.should.be.json;
-        response.body.should.be.a('object');
-        response.body.error.should.equal('Invalid token JsonWebTokenError: invalid signature');
-        done();
-      })
-      .catch((error) => {
-        throw error;
-      });
+    it('should return an error if token does not have admin permission', (done) => {
+      chai.request(server)
+        .put('/api/v1/owners/2')
+        .send({
+          id: 2,
+          firstName: 'ben the borifill',
+          lastName: 'porter',
+          streetAddress: '1234 borifill pl',
+          zipCode: 80058,
+          token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InNvbWVFbWFpbEBlbWFpbC5jb20iLCJhcHBOYW1lIjoiYXBwTmFtZSIsImFkbWluIjpmYWxzZSwiaWF0IjoxNTEzMzAxOTg1fQ.7W_UQVD251kMfB-CvnUiQWWIIzY6hpLZxBn802-vt6'
+        })
+        .then((response) => {
+          response.should.have.status(403);
+          response.should.be.json;
+          response.body.should.be.a('object');
+          response.body.error.should.equal('Invalid token JsonWebTokenError: invalid signature');
+          done();
+        })
+        .catch((error) => {
+          throw error;
+        });
     });
   });
 
   describe('PUT /api/v1/owners/:id', () => {
-  it('should return an error if a property is missing', (done) => {
-    chai.request(server)
-      .put('/api/v1/owners/2')
-      .send({
-        id: 2,
-        firstName: 'ben the borifill',
-        streetAddress: '1234 borifill pl',
-        zipCode: 80058,
-        token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InVzZXJAdHVyaW5nLmlvIiwiYXBwTmFtZSI6InVzZXIiLCJhZG1pbiI6dHJ1ZSwiaWF0IjoxNTEzMjkyNzA4fQ.sT916KQPiD_sbT1Bkguu6VMvkwsWHUkAGHD_b7ul9wo'
-      })
-      .then((response) => {
-        response.should.have.status(422);
-        response.should.be.json;
-        response.body.should.be.a('object');
-        response.body.error.should.equal('You are missing the lastName property');
-        done();
-      })
-      .catch((error) => {
-        throw error;
-      });
+    it('should return an error if a property is missing', (done) => {
+      chai.request(server)
+        .put('/api/v1/owners/2')
+        .send({
+          id: 2,
+          firstName: 'ben the borifill',
+          streetAddress: '1234 borifill pl',
+          zipCode: 80058,
+          token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InVzZXJAdHVyaW5nLmlvIiwiYXBwTmFtZSI6InVzZXIiLCJhZG1pbiI6dHJ1ZSwiaWF0IjoxNTEzMjkyNzA4fQ.sT916KQPiD_sbT1Bkguu6VMvkwsWHUkAGHD_b7ul9wo'
+        })
+        .then((response) => {
+          response.should.have.status(422);
+          response.should.be.json;
+          response.body.should.be.a('object');
+          response.body.error.should.equal('You are missing the lastName property');
+          done();
+        })
+        .catch((error) => {
+          throw error;
+        });
     });
   });
 
   describe('PUT /api/v1/owners/:id', () => {
-  it('should return an error if the owner does not exist', (done) => {
-    chai.request(server)
-      .put('/api/v1/owners/90')
-      .send({
-        id: 2,
-        firstName: 'ben the borifill',
-        lastName: 'porter',
-        streetAddress: '1234 borifill pl',
-        zipCode: 80058,
-        token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InNvbWVFbWFpbEB0dXJpbmcuaW8iLCJhcHBOYW1lIjoiYXBwTmFtZSIsImFkbWluIjp0cnVlLCJpYXQiOjE1MTMzMDIxMjR9.QS_7CB-WoiNjU_9dG5S6Fh0OiqG3fUD75W-8sjD38Vg'
-      })
-      .then((response) => {
-        response.should.have.status(422);
-        response.should.be.json;
-        response.body.should.be.a('object');
-        response.body.error.should.equal('Owner ID does not exist');
-        done();
-      })
-      .catch((error) => {
-        throw error;
-      });
+    it('should return an error if the owner does not exist', (done) => {
+      chai.request(server)
+        .put('/api/v1/owners/90')
+        .send({
+          id: 2,
+          firstName: 'ben the borifill',
+          lastName: 'porter',
+          streetAddress: '1234 borifill pl',
+          zipCode: 80058,
+          token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InNvbWVFbWFpbEB0dXJpbmcuaW8iLCJhcHBOYW1lIjoiYXBwTmFtZSIsImFkbWluIjp0cnVlLCJpYXQiOjE1MTMzMDIxMjR9.QS_7CB-WoiNjU_9dG5S6Fh0OiqG3fUD75W-8sjD38Vg'
+        })
+        .then((response) => {
+          response.should.have.status(422);
+          response.should.be.json;
+          response.body.should.be.a('object');
+          response.body.error.should.equal('Owner ID does not exist');
+          done();
+        })
+        .catch((error) => {
+          throw error;
+        });
     });
   });
 
   describe('PUT /api/v1/homes/:id', () => {
-  it('should return an updated home', (done) => {
-    chai.request(server)
-      .put('/api/v1/homes/2')
-      .send({
-        id: 2,
-        houseName: 'luxury',
-        description: 'holy magoly',
-        bedrooms: 4,
-        bathrooms: 4,
-        houseAddress: '1234 down the road lane',
-        zipCode: 80004,
-        ownerId: 4,
-        token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InVzZXJAdHVyaW5nLmlvIiwiYXBwTmFtZSI6InVzZXIiLCJhZG1pbiI6dHJ1ZSwiaWF0IjoxNTEzMjkyNzA4fQ.sT916KQPiD_sbT1Bkguu6VMvkwsWHUkAGHD_b7ul9wo'
-      })
-      .then((response) => {
-        response.should.have.status(200);
-        response.should.be.json;
-        response.body.should.be.a('array');
-        response.body.length.should.equal(1);
-        response.body[0].id.should.equal(2);
-        response.body[0].houseName.should.equal('luxury');
-        response.body[0].description.should.equal('holy magoly');
-        response.body[0].bedrooms.should.equal(4);
-        response.body[0].bathrooms.should.equal(4);
-        response.body[0].houseAddress.should.equal('1234 down the road lane');
-        response.body[0].zipCode.should.equal(80004);
-        response.body[0].ownerId.should.equal(4);
-        done();
-      })
-      .catch((error) => {
-        throw error;
-      });
+    it('should return an updated home', (done) => {
+      chai.request(server)
+        .put('/api/v1/homes/2')
+        .send({
+          id: 2,
+          houseName: 'luxury',
+          description: 'holy magoly',
+          bedrooms: 4,
+          bathrooms: 4,
+          houseAddress: '1234 down the road lane',
+          zipCode: 80004,
+          ownerId: 4,
+          token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InVzZXJAdHVyaW5nLmlvIiwiYXBwTmFtZSI6InVzZXIiLCJhZG1pbiI6dHJ1ZSwiaWF0IjoxNTEzMjkyNzA4fQ.sT916KQPiD_sbT1Bkguu6VMvkwsWHUkAGHD_b7ul9wo'
+        })
+        .then((response) => {
+          response.should.have.status(201);
+          response.should.be.json;
+          response.body.should.be.a('array');
+          response.body.length.should.equal(1);
+          response.body[0].id.should.equal(2);
+          response.body[0].houseName.should.equal('luxury');
+          response.body[0].description.should.equal('holy magoly');
+          response.body[0].bedrooms.should.equal(4);
+          response.body[0].bathrooms.should.equal(4);
+          response.body[0].houseAddress.should.equal('1234 down the road lane');
+          response.body[0].zipCode.should.equal(80004);
+          response.body[0].ownerId.should.equal(4);
+          done();
+        })
+        .catch((error) => {
+          throw error;
+        });
     });
   });
 
   describe('PUT /api/v1/homes/:id', () => {
-  it('should return an error if a property is missing', (done) => {
-    chai.request(server)
-      .put('/api/v1/homes/2')
-      .send({
-        id: 2,
-        houseName: 'luxury',
-        description: 'holy magoly',
-        bathrooms: 4,
-        houseAddress: '1234 down the road lane',
-        zipCode: 80004,
-        ownerId: 4,
-        token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InVzZXJAdHVyaW5nLmlvIiwiYXBwTmFtZSI6InVzZXIiLCJhZG1pbiI6dHJ1ZSwiaWF0IjoxNTEzMjkyNzA4fQ.sT916KQPiD_sbT1Bkguu6VMvkwsWHUkAGHD_b7ul9wo'
-      })
-      .then((response) => {
-        response.should.have.status(422);
-        response.should.be.json;
-        response.body.should.be.a('object');
-        response.body.error.should.equal('You are missing the bedrooms property');
-        done();
-      })
-      .catch((error) => {
-        throw error;
-      });
+    it('should return an error if a property is missing', (done) => {
+      chai.request(server)
+        .put('/api/v1/homes/2')
+        .send({
+          id: 2,
+          houseName: 'luxury',
+          description: 'holy magoly',
+          bathrooms: 4,
+          houseAddress: '1234 down the road lane',
+          zipCode: 80004,
+          ownerId: 4,
+          token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InVzZXJAdHVyaW5nLmlvIiwiYXBwTmFtZSI6InVzZXIiLCJhZG1pbiI6dHJ1ZSwiaWF0IjoxNTEzMjkyNzA4fQ.sT916KQPiD_sbT1Bkguu6VMvkwsWHUkAGHD_b7ul9wo'
+        })
+        .then((response) => {
+          response.should.have.status(422);
+          response.should.be.json;
+          response.body.should.be.a('object');
+          response.body.error.should.equal('You are missing the bedrooms property');
+          done();
+        })
+        .catch((error) => {
+          throw error;
+        });
     });
   });
 
   describe('PUT /api/v1/homes/:id', () => {
-  it('should return an error if token is invalid', (done) => {
-    chai.request(server)
-      .put('/api/v1/homes/2')
-      .send({
-        id: 2,
-        houseName: 'luxury',
-        description: 'holy magoly',
-        bedrooms: 4,
-        bathrooms: 4,
-        houseAddress: '1234 down the road lane',
-        zipCode: 80004,
-        ownerId: 4,
-        token: 'eiJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InVzZXJAdHVyaW5nLmlvIiwiYXBwTmFtZSI6InVzZXIiLCJhZG1pbiI6dHJ1ZSwiaWF0IjoxNTEzMjkyNzA4fQ.sT916KQPiD_sbT1Bkguu6VMvkwsWHUkAGHD_b7ul9wo'
-      })
-      .then((response) => {
-        response.should.have.status(403);
-        response.should.be.json;
-        response.body.should.be.a('object');
-        response.body.error.should.equal('Invalid token JsonWebTokenError: invalid token');
-        done();
-      })
-      .catch((error) => {
-        throw error;
-      });
+    it('should return an error if token is invalid', (done) => {
+      chai.request(server)
+        .put('/api/v1/homes/2')
+        .send({
+          id: 2,
+          houseName: 'luxury',
+          description: 'holy magoly',
+          bedrooms: 4,
+          bathrooms: 4,
+          houseAddress: '1234 down the road lane',
+          zipCode: 80004,
+          ownerId: 4,
+          token: 'eiJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InVzZXJAdHVyaW5nLmlvIiwiYXBwTmFtZSI6InVzZXIiLCJhZG1pbiI6dHJ1ZSwiaWF0IjoxNTEzMjkyNzA4fQ.sT916KQPiD_sbT1Bkguu6VMvkwsWHUkAGHD_b7ul9wo'
+        })
+        .then((response) => {
+          response.should.have.status(403);
+          response.should.be.json;
+          response.body.should.be.a('object');
+          response.body.error.should.equal('Invalid token JsonWebTokenError: invalid token');
+          done();
+        })
+        .catch((error) => {
+          throw error;
+        });
     });
   });
 
   describe('PUT /api/v1/homes/:id', () => {
-  it('should return an error if token does not have admin access', (done) => {
-    chai.request(server)
-      .put('/api/v1/homes/2')
-      .send({
-        id: 2,
-        houseName: 'luxury',
-        description: 'holy magoly',
-        bedrooms: 4,
-        bathrooms: 4,
-        houseAddress: '1234 down the road lane',
-        zipCode: 80004,
-        ownerId: 4,
-        token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InNvbWVFbWFpbEBlbWFpbC5jb20iLCJhcHBOYW1lIjoiYXBwTmFtZSIsImFkbWluIjpmYWxzZSwiaWF0IjoxNTEzMzAxOTg1fQ.7W_UQVD251kMfB-CvnUiQWWIIzY6hpLZxBn802-vt6k'
-      })
-      .then((response) => {
-        response.should.have.status(403);
-        response.should.be.json;
-        response.body.should.be.a('object');
-        response.body.error.should.equal('Authorization is required null');
-        done();
-      })
-      .catch((error) => {
-        throw error;
-      });
+    it('should return an error if token does not have admin access', (done) => {
+      chai.request(server)
+        .put('/api/v1/homes/2')
+        .send({
+          id: 2,
+          houseName: 'luxury',
+          description: 'holy magoly',
+          bedrooms: 4,
+          bathrooms: 4,
+          houseAddress: '1234 down the road lane',
+          zipCode: 80004,
+          ownerId: 4,
+          token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InNvbWVFbWFpbEBlbWFpbC5jb20iLCJhcHBOYW1lIjoiYXBwTmFtZSIsImFkbWluIjpmYWxzZSwiaWF0IjoxNTEzMzAxOTg1fQ.7W_UQVD251kMfB-CvnUiQWWIIzY6hpLZxBn802-vt6k'
+        })
+        .then((response) => {
+          response.should.have.status(403);
+          response.should.be.json;
+          response.body.should.be.a('object');
+          response.body.error.should.equal('Authorization is required null');
+          done();
+        })
+        .catch((error) => {
+          throw error;
+        });
     });
   });
 
   describe('PUT /api/v1/homes/:id', () => {
-  it('should return an error if home does not exist', (done) => {
-    chai.request(server)
-      .put('/api/v1/homes/89')
-      .send({
-        id: 2,
-        houseName: 'luxury',
-        description: 'holy magoly',
-        bedrooms: 4,
-        bathrooms: 4,
-        houseAddress: '1234 down the road lane',
-        zipCode: 80004,
-        ownerId: 4,
-        token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InNvbWVFbWFpbEB0dXJpbmcuaW8iLCJhcHBOYW1lIjoiYXBwTmFtZSIsImFkbWluIjp0cnVlLCJpYXQiOjE1MTMzMDIxMjR9.QS_7CB-WoiNjU_9dG5S6Fh0OiqG3fUD75W-8sjD38Vg'
-      })
-      .then((response) => {
-        response.should.have.status(422);
-        response.should.be.json;
-        response.body.should.be.a('object');
-        response.body.error.should.equal('Home ID does not exist');
-        done();
-      })
-      .catch((error) => {
-        throw error;
-      });
+    it('should return an error if home does not exist', (done) => {
+      chai.request(server)
+        .put('/api/v1/homes/89')
+        .send({
+          id: 2,
+          houseName: 'luxury',
+          description: 'holy magoly',
+          bedrooms: 4,
+          bathrooms: 4,
+          houseAddress: '1234 down the road lane',
+          zipCode: 80004,
+          ownerId: 4,
+          token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InNvbWVFbWFpbEB0dXJpbmcuaW8iLCJhcHBOYW1lIjoiYXBwTmFtZSIsImFkbWluIjp0cnVlLCJpYXQiOjE1MTMzMDIxMjR9.QS_7CB-WoiNjU_9dG5S6Fh0OiqG3fUD75W-8sjD38Vg'
+        })
+        .then((response) => {
+          response.should.have.status(422);
+          response.should.be.json;
+          response.body.should.be.a('object');
+          response.body.error.should.equal('Home ID does not exist');
+          done();
+        })
+        .catch((error) => {
+          throw error;
+        });
     });
   });
 

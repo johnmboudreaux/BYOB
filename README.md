@@ -5,7 +5,12 @@
 > This application is an express backend with a postgresql database. The data is imported into a json file 
 which is then used to seed two relational data tables. It also supports json web tokens, which requires the 
 client to request a token with a valid email address and application name before they are allowed to modify 
-any data saved to the one of the two data tables provided by our schema. The 
+any data saved to the one of the two data tables provided by our schema.
+
+> BYOB runs with `webpack` and `express` so to get started first you must clone this repo and the navigate into the cloned directory. 
+Once in the directory open a seperate terminal tab and in one run `npm run build` and the other `npm start`.
+Navigate to localhost:3000 in your browser and input fields will appear.
+
 
 ## Constructed With
 

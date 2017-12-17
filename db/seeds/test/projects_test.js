@@ -127,6 +127,7 @@ exports.seed = function(knex, Promise) {
           })
           .then(home => {
             home
+            console.log('db seeded');
           })
           .catch(error => console.log(`Error seeding data ${ error }`))
       ]);
