@@ -198,10 +198,11 @@ app.delete('/api/v1/owners/:id', checkAuth, (request, response) => {
     .catch(error => response.status(500).json({error: `Internal server error ${error}`}));
 
   database('home_owner').where('id', id).del()
-    .then(length => {
-      length ? response.sendStatus(204) : response.status(422)
-        .send({ error: `Nothing to delete with id ${id}`});
-    })
+    .then(owner =>  owner ?
+      response.sendStatus(204)
+      :
+      response.status(422).json({ error: `Nothing to delete with id ${id}`})
+    )
     .catch(error => response.status(500).json({ error }));
 });
 
@@ -210,10 +211,11 @@ app.delete('/api/v1/homes/:id', checkAuth, (request, response) => {
   delete request.body.token;
 
   database('homes').where('ownerId', id).del()
-    .then(length => {
-      length ? response.sendStatus(204) : response.status(422)
-        .json({ error: `Nothing to delete with id ${id}`});
-    })
+    .then(home => home ?
+      response.sendStatus(204)
+      :
+      response.status(422).json({ error: `Nothing to delete with id ${id}`})
+    )
     .catch(error => response.status(500).json({ error }));
 
 });
