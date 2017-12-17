@@ -2,13 +2,13 @@
 
 ### by Ben Porter and John Boudreaux
 
-> This application is an express backend with a postgresql database. The data is imported into a json file 
-which is then used to seed two relational data tables. It also supports json web tokens, which requires the 
-client to request a token with a valid email address and application name before they are allowed to modify 
+> This application is an express backend with a postgresql database. The data is imported into a json file
+which is then used to seed two relational data tables. It also supports json web tokens, which requires the
+client to request a token with a valid email address and application name before they are allowed to modify
 any data saved to the one of the two data tables provided by our schema.
 
-> BYOB runs with `webpack` and `express` so to get started first you must clone this repo and the navigate into the cloned directory. 
-Once in the directory open a seperate terminal tab and in one run `npm run build` and the other `npm start`.
+> BYOB runs with `webpack` and `express` so to get started first you must clone this repo and the navigate into the cloned directory.
+Once in the directory open a separate terminal tab and in one run `npm run build` and the other `npm start`.
 Navigate to localhost:3000 in your browser and input fields will appear.
 
 
@@ -29,14 +29,14 @@ Navigate to localhost:3000 in your browser and input fields will appear.
 
 ### `Authentication`
 
-> This endoint provides a JWT which is where access is granted to a user to manipulate data. It checks for a valid email and an
+> This endpoint provides a JWT which is where access is granted to a user to manipulate data. It checks for a valid email and an
 application name in order to return a token.
 
 `/api/v1/authenticate`
 
 > In order to receive a token the body of the request must contain the **appName** and **email** properties.
 
-> Below is an example of a request and a response 
+> Below is an example of a request and a response
 
 > **request:**
 ```
@@ -91,7 +91,7 @@ When a request is made a response will be returned with one of the following sta
 * `200` `OK` The request was successful
 * `403` `Forbidden` You do not have permission to view the requested file or resource
 * `404` `Not found` The request was successful, but the server could not find what was requested
-* `500` `Server Error` An error occured within the server 
+* `500` `Server Error` An error occurred within the server
 
 > Below are the available endpoints included in the server
 
