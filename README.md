@@ -36,7 +36,9 @@ application name in order to return a token.
 
 > In order to receive a token the body of the request must contain the **appName** and **email** properties.
 
-> Below is an example of a request and a response
+
+> Below is an example of a request and a response 
+
 
 > **request:**
 ```
@@ -91,7 +93,8 @@ When a request is made a response will be returned with one of the following sta
 * `200` `OK` The request was successful
 * `403` `Forbidden` You do not have permission to view the requested file or resource
 * `404` `Not found` The request was successful, but the server could not find what was requested
-* `500` `Server Error` An error occured within the server
+* `500` `Server Error` An error occured within the server 
+
 
 > Below are the available endpoints included in the server
 

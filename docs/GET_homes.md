@@ -47,8 +47,3 @@
 
   * **Code:** 500 INTERNAL SERVER ERROR <br />
     **Content:** `{ error: 'Internal server error with error included.' }` <br />
-
-
-#### **_Notes:_**
-
-`N/A`
