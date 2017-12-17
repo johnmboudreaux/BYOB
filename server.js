@@ -158,12 +158,11 @@ app.put('/api/v1/owners/:id', checkAuth, (request, response) => {
   updatedOwner = Object.assign({}, updatedOwner, {id: id});
 
   database('home_owner').where('id', id).update(updatedOwner, '*')
-    .then(updatedOwner => {
-      if (!updatedOwner.length){
-        return response.status(422).json({error: `Owner ID does not exist`});
-      }
-      return response.status(201).json(updatedOwner);
-    })
+    .then(updatedOwner => !updatedOwner.length ?
+      response.status(422).json({error: `Owner ID does not exist`})
+      :
+      response.status(201).json(updatedOwner)
+    )
     .catch(error => response.status(500).json({error: `Internal server error ${error}`}));
 });
 
