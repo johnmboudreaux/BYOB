@@ -474,7 +474,7 @@ describe('API Routes', () => {
         token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InVzZXJAdHVyaW5nLmlvIiwiYXBwTmFtZSI6InVzZXIiLCJhZG1pbiI6dHJ1ZSwiaWF0IjoxNTEzMjkyNzA4fQ.sT916KQPiD_sbT1Bkguu6VMvkwsWHUkAGHD_b7ul9wo'
       })
       .then((response) => {
-        response.should.have.status(200);
+        response.should.have.status(201);
         response.should.be.json;
         response.body.should.be.a('array');
         response.body.length.should.equal(1);
@@ -606,7 +606,7 @@ describe('API Routes', () => {
         token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InVzZXJAdHVyaW5nLmlvIiwiYXBwTmFtZSI6InVzZXIiLCJhZG1pbiI6dHJ1ZSwiaWF0IjoxNTEzMjkyNzA4fQ.sT916KQPiD_sbT1Bkguu6VMvkwsWHUkAGHD_b7ul9wo'
       })
       .then((response) => {
-        response.should.have.status(200);
+        response.should.have.status(201);
         response.should.be.json;
         response.body.should.be.a('array');
         response.body.length.should.equal(1);
