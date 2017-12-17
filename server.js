@@ -66,15 +66,14 @@ app.get('/api/v1/owners/:id', (request, response) => {
 
   database('home_owner').where('id', id).select()
     .then(owner => {
-      if (owner.length){
-        return response.status(200).json(owner);
-      } else {
-        return response.status(404).json({
+      owner.length ? response.status(200).json(owner)
+        :
+        response.status(404).json({
           error: `Could not find owner with id: ${id}`
         });
-      }
     })
-    .catch(error => response.status(500).json({error}));
+    .catch(error => response.status(500).json({error})
+    );
 });
 
 app.get('/api/v1/homes', (request, response) => {
@@ -169,7 +168,7 @@ app.put('/api/v1/owners/:id', checkAuth, (request, response) => {
       if (!updatedOwner.length){
         return response.status(422).json({error: `Owner ID does not exist`});
       }
-      return response.status(200).json(updatedOwner);
+      return response.status(201).json(updatedOwner);
     })
     .catch(error => response.status(500).json({error: `Internal server error ${error}`}));
 });
@@ -194,7 +193,7 @@ app.put('/api/v1/homes/:id', checkAuth, (request, response) => {
       if (!updatedHome.length){
         return response.status(422).json({error: `Home ID does not exist`});
       }
-      return response.status(200).json(updatedHome);
+      return response.status(201).json(updatedHome);
     })
     .catch(error => response.status(500).json({error: `Internal server error ${error}`}));
 });
